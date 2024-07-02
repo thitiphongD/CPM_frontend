@@ -1,5 +1,7 @@
-"use client";
+import React from "react";
 
-export default function Home() {
-  return <h1>Lannding page</h1>;
-}
+const Home = () => {
+  return <div>Home</div>;
+};
+
+export default Home;

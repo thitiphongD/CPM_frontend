@@ -8,7 +8,7 @@ const Navbar = () => {
       <h1 className="text-3xl font-bold text-customYellow">CPM</h1>
       <div className="flex items-center space-x-4">
         <Link
-          className="inline-block align-baseline font-bold text-sm text-white hover:text-gray-300"
+          className="inline-block align-baseline font-bold text-sm text-white hover:text-customYellow"
           href={{
             pathname: "/",
           }}
@@ -16,7 +16,7 @@ const Navbar = () => {
           Home
         </Link>
         <Link
-          className="inline-block align-baseline font-bold text-sm text-white hover:text-gray-300"
+          className="inline-block align-baseline font-bold text-sm text-white hover:text-customYellow"
           href={{
             pathname: "/login",
           }}

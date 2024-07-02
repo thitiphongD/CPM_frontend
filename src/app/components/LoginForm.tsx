@@ -44,7 +44,7 @@ const LoginForm: React.FC = () => {
           Login
         </button>
         <Link
-          className="inline-block align-baseline font-bold text-sm text-white hover:text-gray-300"
+          className="inline-block align-baseline font-bold text-sm text-white hover:text-customYellow"
           href={{
             pathname: "/register",
           }}

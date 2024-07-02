@@ -56,9 +56,9 @@ const RegisterForm: React.FC = () => {
           Register
         </button>
         <Link
-          className="inline-block align-baseline font-bold text-sm text-white hover:text-gray-300"
+          className="inline-block align-baseline font-bold text-sm text-white hover:text-customYellow"
           href={{
-            pathname: "/",
+            pathname: "/login",
           }}
         >
           Already Account?
