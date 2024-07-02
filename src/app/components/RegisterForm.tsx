@@ -1,7 +1,9 @@
 import Link from "next/link";
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const RegisterForm: React.FC = () => {
+  const router = useRouter();
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
@@ -11,6 +13,14 @@ const RegisterForm: React.FC = () => {
     console.log("username", username);
     console.log("password", password);
     console.log("Confirm Password:", confirmPassword);
+
+    if (password !== confirmPassword) {
+      alert("Password not match!");
+      setPassword("");
+      setConfirmPassword("");
+    } else {
+      router.push("/");
+    }
   };
 
   return (
