@@ -9,7 +9,7 @@ const LoginForm: React.FC = () => {
   const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("username", username);
-    console.log("username", password);
+    console.log("password", password);
   };
 
   return (

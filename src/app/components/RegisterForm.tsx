@@ -9,7 +9,7 @@ const RegisterForm: React.FC = () => {
   const handleRegister = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("username", username);
-    console.log("username", password);
+    console.log("password", password);
     console.log("Confirm Password:", confirmPassword);
   };
 
