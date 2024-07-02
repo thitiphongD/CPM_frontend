@@ -5,10 +5,5 @@
 
 body {
   background: #1c1c1c;
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+  padding: 20px 0px 40px 40px;
 }
