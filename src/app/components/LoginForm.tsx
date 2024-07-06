@@ -1,16 +1,37 @@
 import React, { useState } from "react";
 import { LoginType } from "../interfaces/auth";
+import { useRouter } from "next/navigation";
 
 const LoginForm: React.FC = () => {
+  const router = useRouter();
   const [login, setLogin] = useState<LoginType>({
     username: "",
     password: "",
   });
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { username, password } = login;
     console.log("Logging in with:", username, password);
+
+    try {
+      const res = await fetch("http://localhost:8080/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        console.log("Login successful", data);
+        localStorage.setItem('username', username);
+        router.push("/portfolio")
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+    }
   };
   return (
     <form onSubmit={handleSubmit}>
