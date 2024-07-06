@@ -2,14 +2,20 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { LoginForm } from "../interfaces/auth";
+
 
 const LoginPage = () => {
   const router = useRouter();
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
 
-  const handleSubmit = (e: any) => {
+  const [login, setLogin] = useState<LoginForm>({
+    username: "",
+    password: "",
+  });
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const { username, password } = login;
     console.log("Logging in with:", username, password);
   };
 
@@ -25,8 +31,8 @@ const LoginPage = () => {
             <input
               type="text"
               placeholder="Enter your username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              value={login.username}
+              onChange={(e) => setLogin({ ...login, username: e.target.value })} 
               required
               className="w-96 placeholder-[#7c7c7c] p-2"
             />
@@ -36,8 +42,8 @@ const LoginPage = () => {
             <input
               type="password"
               placeholder="Enter your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={login.password}
+              onChange={(e) => setLogin({ ...login, password: e.target.value })} 
               required
               className="w-96 placeholder-[#7c7c7c] p-2 hover:text-hoverYellow"
             />

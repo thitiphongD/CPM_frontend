@@ -2,16 +2,24 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { RegisterForm } from "../interfaces/auth";
 
-const LoginPage = () => {
+const RegisterPage = () => {
   const router = useRouter();
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handleSubmit = (e: any) => {
+  const [register, setRegister] = useState<RegisterForm>({
+    username: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("register in with:", username, password, confirmPassword);
+    const { username, password, confirmPassword } = register;
+
+    if (password !== confirmPassword) {
+      alert("password not match");
+    }
   };
 
   return (
@@ -26,8 +34,8 @@ const LoginPage = () => {
             <input
               type="text"
               placeholder="Enter your username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              value={register.username}
+              onChange={(e) => setRegister({ ...register, username: e.target.value })} 
               required
               className="w-96 placeholder-[#7c7c7c] p-2"
             />
@@ -37,8 +45,8 @@ const LoginPage = () => {
             <input
               type="password"
               placeholder="Enter password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={register.password}
+              onChange={(e) => setRegister({ ...register, password: e.target.value })} 
               required
               className="w-96 placeholder-[#7c7c7c] p-2 hover:text-hoverYellow"
             />
@@ -48,8 +56,8 @@ const LoginPage = () => {
             <input
               type="password"
               placeholder="Enter confirm password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              value={register.confirmPassword}
+              onChange={(e) => setRegister({ ...register, confirmPassword: e.target.value })} 
               required
               className="w-96 placeholder-[#7c7c7c] p-2 hover:text-hoverYellow"
             />
@@ -70,4 +78,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default RegisterPage;
