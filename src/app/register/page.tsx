@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import RegisterForm from "../components/RegisterForm";
 
 const RegisterPage: React.FC = () => {
