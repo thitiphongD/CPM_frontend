@@ -2,12 +2,16 @@
 
 import React, { useEffect, useState } from "react";
 import useSWR from "swr";
+import Link from "next/link";
 
 const CryptoTable: React.FC = () => {
   const fetcher = (url: string) => fetch(url).then((res) => res.json());
-  const { data, error } = useSWR("http://localhost:8080/coin-list", fetcher, {
-    refreshInterval: 5000,
-  });
+  
+  //   const { data, error } = useSWR("http://localhost:8080/coin-list", fetcher, {
+  //     refreshInterval: 5000,
+  //   });
+
+  const { data, error } = useSWR("http://localhost:8080/coin-list", fetcher);
   const coins = data?.data;
 
   if (error) return <p>Error: {error.message}</p>;
@@ -31,8 +35,13 @@ const CryptoTable: React.FC = () => {
         {coins.map((coin: any) => (
           <tr key={coin.id}>
             <td className="text-center">{coin.cmc_rank}</td>
-            <td>
-              {coin.name} ({coin.symbol})
+            <td className="cursor-pointer hover:text-customYellow">
+              <Link
+                className="inline-block align-baseline font-bold text-sm hover:text-customYellow"
+                href={`/coin/${coin.id}`}
+              >
+                {coin.name} ({coin.symbol})
+              </Link>
             </td>
             <td>${coin.quote.USD.price.toFixed(2)}</td>
             <td>{coin.quote.USD.percent_change_1h.toFixed(2)}%</td>
