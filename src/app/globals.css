@@ -2,8 +2,60 @@
 @tailwind components;
 @tailwind utilities;
 
-
 body {
+  color: white;
   background: #1c1c1c;
-  padding: 20px 0px 40px 40px;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+input {
+  background: #212121;
+  border: 1px solid #343434;
+  outline: none;
+  padding: 4px;
+  padding-left: 10px;
+  border-radius: 4px;
+}
+
+.all-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+}
+
+.flex-center-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.default {
+  background: rgb(40, 40, 40);
+  padding: 5px 10px 5px 10px;
+  border-radius: 5px;
+  border: 1px solid #343434;
+}
+
+.primary {
+  background: #15593b;
+  padding: 5px 10px 5px 10px;
+  border-radius: 5px;
+  border: #217b54 solid 1px;
+}
+
+.danger {
+  background: rgb(244, 67, 54);
+  padding: 5px 10px 5px 10px;
+  border-radius: 5px;
+  border: rgb(244, 67, 54) solid 1px;
 }
