@@ -35,9 +35,9 @@ const CryptoTable: React.FC = () => {
               {coin.name} ({coin.symbol})
             </td>
             <td>${coin.quote.USD.price.toFixed(2)}</td>
-            <td>{coin.quote.USD.percent_change_1h}%</td>
-            <td>{coin.quote.USD.percent_change_24h}%</td>
-            <td>{coin.quote.USD.percent_change_7d}%</td>
+            <td>{coin.quote.USD.percent_change_1h.toFixed(2)}%</td>
+            <td>{coin.quote.USD.percent_change_24h.toFixed(2)}%</td>
+            <td>{coin.quote.USD.percent_change_7d.toFixed(2)}%</td>
             <td>${coin.quote.USD.volume_24h.toFixed(2)}</td>
             <td>${coin.quote.USD.market_cap.toFixed(2)}</td>
           </tr>
