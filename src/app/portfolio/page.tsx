@@ -1,6 +1,6 @@
 import React from "react";
 
-const PortfolioPage = () => {
+const PortfolioPage: React.FC = () => {
   return <div>PortfolioPage</div>;
 };
 
