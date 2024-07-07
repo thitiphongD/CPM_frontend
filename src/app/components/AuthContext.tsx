@@ -1,6 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import React, { createContext, useState, useContext, useEffect } from "react";
+import { AuthLogin } from "../interfaces/auth";
 
 type AuthContextType = {
   isAuth: boolean;
@@ -14,6 +15,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [isAuth, setIsAuth] = useState(false);
+
+
+//   const [isAuth, setIsAuth] = useState<AuthLogin>({
+//     username: '',
+//     isLogin: false
+//   });
 
   useEffect(() => {
     const username = localStorage.getItem("username");

@@ -5,17 +5,16 @@ import { useAuth } from "./AuthContext";
 
 const LoginForm: React.FC = () => {
   const router = useRouter();
+  const { loginAuth } = useAuth();
+
   const [login, setLogin] = useState<LoginType>({
     username: "",
     password: "",
   });
-  const { loginAuth } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { username, password } = login;
-    console.log("Logging in with:", username, password);
-
     try {
       const res = await fetch("http://localhost:8080/login", {
         method: "POST",
@@ -26,8 +25,6 @@ const LoginForm: React.FC = () => {
       });
 
       if (res.ok) {
-        const data = await res.json();
-        console.log("Login successful", data);
         loginAuth(username);
         router.push("/portfolio")
       }
@@ -35,6 +32,7 @@ const LoginForm: React.FC = () => {
       console.error("Login error:", error);
     }
   };
+  
   return (
     <form onSubmit={handleSubmit}>
       <div className="mb-4">

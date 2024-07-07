@@ -8,3 +8,8 @@ export interface RegisterType {
     password: string;
     confirmPassword: string;
 }
+
+export interface AuthLogin {
+    username: string;
+    isLogin: boolean;
+}

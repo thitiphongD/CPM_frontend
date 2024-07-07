@@ -17,7 +17,7 @@ const CoinPage: React.FC<Coin> = ({ params }) => {
     const fetchCoinData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/coins/${params.id}`
+          `http://localhost:8080/coin/${params.id}`
         );
         if (!response.ok) {
           throw new Error("Network response was not ok");
