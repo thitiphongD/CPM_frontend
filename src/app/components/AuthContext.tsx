@@ -58,7 +58,7 @@ export const useAuth = () => {
 export const withAuth = (WrapComponent: React.ComponentType) => {
     return function AuthenticatedComponent(props: any) {
       const { isAuth } = useAuth();
-      const router = useRouter();
+      const router = useRouter();      
   
       useEffect(() => {
         if (!isAuth) {
