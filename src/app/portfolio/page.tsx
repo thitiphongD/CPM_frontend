@@ -1,45 +1,46 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { withAuth } from "../components/AuthContext";
+import { useAuth } from "../components/AuthContext";
 
 const PortfolioPage: React.FC = () => {
   const [portfolioData, setPortfolioData] = useState<any>(null);
-  const username =
-    typeof window !== "undefined" ? localStorage.getItem("username") : null;
+  const [username, setUsername] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchPortfolioData = async () => {
-      try {
-        if (!username) {
-          throw new Error("Username not found in localStorage");
-        }
+    const storedUsername = localStorage.getItem("username");
+    setUsername(storedUsername);
+  }, []);
 
-        const url = `http://localhost:8080/portfolio`;
-        const response = await fetch(url, {
-          method: 'GET',
+  useEffect(() => {
+    const fetchPortfolio = async () => {
+      if (!username) return;
+
+      try {
+        const response = await fetch(`http://localhost:8080/portfolio/${username}`, {
+          method: "GET",
           headers: {
-            'Content-Type': 'application/json'
-            // Optionally add other headers if needed
-          }
+            "Content-Type": "application/json",
+          },
         });
 
         if (!response.ok) {
-          throw new Error('Failed to fetch portfolio data');
+          throw new Error("Failed to fetch portfolio");
         }
-
-        const data = await response.json();
-        setPortfolioData(data);
-      } catch (error) {
-        console.error('Error fetching portfolio data:', error);
-        // Handle error state or display error message
+        const result = await response.json();        
+        setPortfolioData(result);
+      } catch (err) {
+        console.error("Error fetching portfolio:", err);
       }
     };
 
     if (username) {
-      fetchPortfolioData();
+      fetchPortfolio();
     }
   }, [username]);
-
+  
+  console.log('portfolioData', portfolioData);
+  
   return (
     <div>
       <h1>PortfolioPage</h1>
@@ -48,4 +49,4 @@ const PortfolioPage: React.FC = () => {
   );
 };
 
-export default withAuth(PortfolioPage);
+export default PortfolioPage;

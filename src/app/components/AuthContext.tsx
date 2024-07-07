@@ -17,6 +17,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [isAuth, setIsAuth] = useState(false);
 
 
+
 //   const [isAuth, setIsAuth] = useState<AuthLogin>({
 //     username: '',
 //     isLogin: false
@@ -54,7 +55,7 @@ export const useAuth = () => {
 
 
 
-export const withAuth = (WrappedComponent: React.ComponentType) => {
+export const withAuth = (WrapComponent: React.ComponentType) => {
     return function AuthenticatedComponent(props: any) {
       const { isAuth } = useAuth();
       const router = useRouter();
@@ -69,6 +70,6 @@ export const withAuth = (WrappedComponent: React.ComponentType) => {
         return null; // หรือ return <LoadingComponent />
       }
   
-      return <WrappedComponent {...props} />;
+      return <WrapComponent {...props} />;
     };
   };
