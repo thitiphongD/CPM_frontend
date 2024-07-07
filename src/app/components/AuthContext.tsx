@@ -45,18 +45,6 @@ export const useAuth = () => {
   return context;
 };
 
-// export const useRequireAuth = () => {
-//   const { isAuth } = useAuth();
-//   const router = useRouter();
-
-//   useEffect(() => {
-//     if (!isAuth) {
-//       router.push("/");
-//     }
-//   }, [isAuth, router]);
-
-//   return isAuth;
-// };
 
 
 export const withAuth = (WrappedComponent: React.ComponentType) => {
