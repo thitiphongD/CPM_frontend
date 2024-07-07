@@ -3,12 +3,19 @@ import React, { useEffect, useState } from "react";
 import { withAuth } from "../components/AuthContext";
 import { CoinData } from "../interfaces/coin";
 import DetailCoin from "../components/DetailCoin";
+import FormCrypto from "../components/FormCrypto";
+
+enum Display {
+  TABLE,
+  DETAIL,
+  FORM,
+}
 
 const PortfolioPage: React.FC = () => {
   const [portfolioData, setPortfolioData] = useState<any>(null);
   const [username, setUsername] = useState<string | null>(null);
   const [data, setData] = useState<any>(null);
-  const [openDetail, setOpenDetail] = useState<boolean>(false);
+  const [displayState, setDisplayState] = useState<Display>(Display.TABLE);
 
   useEffect(() => {
     const getUsername = localStorage.getItem("username");
@@ -44,60 +51,77 @@ const PortfolioPage: React.FC = () => {
       fetchPortfolio();
     }
   }, [username]);
-  
+
   const handleCoinClick = (coin: CoinData) => {
-    setOpenDetail(true);
+    setDisplayState(Display.DETAIL);
     setData(coin);
   };
 
   const handleClose = () => {
-    setOpenDetail(false);
+    setDisplayState(Display.TABLE);
+  };
+
+  const handleFormOpen = () => {
+    setDisplayState(Display.FORM);
+  };
+
+  const handleFormClose = () => {
+    setDisplayState(Display.TABLE);
   };
 
   return (
     <div className="all-center">
-      {!openDetail ? (
-        <table className="w-3/4">
-          <thead>
-            <tr>
-              <th className="w-20 h-12 text-center">Rank</th>
-              <th>Coin</th>
-              <th>Price</th>
-              <th>Quantity</th>
-              <th>Amount (USD)</th>
-              <th>1h</th>
-              <th>24h</th>
-              <th>7d</th>
-              <th>24h Volume</th>
-              <th>Market Cap</th>
-            </tr>
-          </thead>
-          <tbody>
-            {portfolioData?.data.map((coin: CoinData) => (
-              <tr
-                key={coin.id}
-                onClick={() => handleCoinClick(coin)}
-                style={{ cursor: "pointer" }}
-              >
-                <td className="text-center">{coin.cmc_rank}</td>
-                <td>
-                  {coin.name} ({coin.symbol})
-                </td>
-                <td>${coin.price}</td>
-                <td>{coin.quantity.toFixed(2)}</td>
-                <td>${coin.amount}</td>
-                <td>{coin.percent_change_1h}%</td>
-                <td>{coin.percent_change_24h}%</td>
-                <td>{coin.percent_change_7d}%</td>
-                <td>${coin.volume_24h}</td>
-                <td>${coin.market_cap}</td>
+      {displayState === Display.TABLE && (
+        <div>
+          <table className="w-3/4">
+            <thead>
+              <tr>
+                <th className="w-20 h-12 text-center">Rank</th>
+                <th>Coin</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Amount (USD)</th>
+                <th>1h</th>
+                <th>24h</th>
+                <th>7d</th>
+                <th>24h Volume</th>
+                <th>Market Cap</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      ) : (
+            </thead>
+            <tbody>
+              {portfolioData?.data.map((coin: CoinData) => (
+                <tr
+                  key={coin.id}
+                  onClick={() => handleCoinClick(coin)}
+                  style={{ cursor: "pointer" }}
+                >
+                  <td className="text-center">{coin.cmc_rank}</td>
+                  <td>
+                    {coin.name} ({coin.symbol})
+                  </td>
+                  <td>${coin.price}</td>
+                  <td>{coin.quantity.toFixed(2)}</td>
+                  <td>${coin.amount}</td>
+                  <td>{coin.percent_change_1h}%</td>
+                  <td>{coin.percent_change_24h}%</td>
+                  <td>{coin.percent_change_7d}%</td>
+                  <td>${coin.volume_24h}</td>
+                  <td>${coin.market_cap}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <button className="primary mt-4" onClick={handleFormOpen}>
+            Add
+          </button>
+        </div>
+      )}
+
+      {displayState === Display.DETAIL && Display && (
         <DetailCoin coinData={data} onBack={handleClose} />
       )}
+
+      {displayState === Display.FORM && <FormCrypto onBack={handleFormClose} />}
     </div>
   );
 };

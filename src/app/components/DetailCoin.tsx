@@ -8,8 +8,8 @@ interface Props {
 
 const DetailCoin: React.FC<Props> = ({ coinData, onBack }) => {
   return (
-    <div className="fixed inset-0 z-50 overflow-auto flex justify-center items-center">
-      <div className="p-6 rounded-lg max-w-md border bg-[rgb(40, 40, 40)] border-[#343434]">
+    <div className="fixed inset-0 z-50 overflow-auto bg-opacity-20 backdrop-blur-sm flex justify-center items-center">
+      <div className="relative p-6 rounded-lg max-w-md border bg-[rgb(40, 40, 40)] border-[#343434]">
         <p
           className="flex items-center justify-end font-bold text-xl cursor-pointer hover:text-customYellow"
           onClick={onBack}
