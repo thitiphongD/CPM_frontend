@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { LoginType } from "../interfaces/auth";
 import { useRouter } from "next/navigation";
+import { useAuth } from "./AuthContext";
 
 const LoginForm: React.FC = () => {
   const router = useRouter();
@@ -8,6 +9,7 @@ const LoginForm: React.FC = () => {
     username: "",
     password: "",
   });
+  const { loginAuth } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -26,7 +28,7 @@ const LoginForm: React.FC = () => {
       if (res.ok) {
         const data = await res.json();
         console.log("Login successful", data);
-        localStorage.setItem('username', username);
+        loginAuth(username);
         router.push("/portfolio")
       }
     } catch (error) {
