@@ -1,15 +1,16 @@
 "use client";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { withAuth } from "../components/AuthContext";
-import { useAuth } from "../components/AuthContext";
 
 const PortfolioPage: React.FC = () => {
   const [portfolioData, setPortfolioData] = useState<any>(null);
   const [username, setUsername] = useState<string | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
-    const storedUsername = localStorage.getItem("username");
-    setUsername(storedUsername);
+    const getUsername = localStorage.getItem("username");
+    setUsername(getUsername);
   }, []);
 
   useEffect(() => {
@@ -17,17 +18,20 @@ const PortfolioPage: React.FC = () => {
       if (!username) return;
 
       try {
-        const response = await fetch(`http://localhost:8080/portfolio/${username}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const response = await fetch(
+          `http://localhost:8080/portfolio/${username}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Failed to fetch portfolio");
         }
-        const result = await response.json();        
+        const result = await response.json();
         setPortfolioData(result);
       } catch (err) {
         console.error("Error fetching portfolio:", err);
@@ -38,9 +42,7 @@ const PortfolioPage: React.FC = () => {
       fetchPortfolio();
     }
   }, [username]);
-  
-  console.log('portfolioData', portfolioData);
-  
+
   return (
     <div>
       <h1>PortfolioPage</h1>
@@ -49,4 +51,4 @@ const PortfolioPage: React.FC = () => {
   );
 };
 
-export default PortfolioPage;
+export default withAuth(PortfolioPage);
