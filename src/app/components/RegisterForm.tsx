@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { RegisterType } from "../interfaces/auth";
 
-const RegisterForm = () => {
+const RegisterForm: React.FC = () => {
   const [register, setRegister] = useState<RegisterType>({
     username: "",
     password: "",

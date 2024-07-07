@@ -1,27 +1,14 @@
-"use client"
-import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+"use client";
+import React from "react";
+import { withAuth } from "../components/AuthContext";
 
 const PortfolioPage: React.FC = () => {
-  const router = useRouter();
-
-  useEffect(() => {
-    const username = localStorage.getItem('username');
-    if (!username) {
-      router.push('/');
-    }
-  }, [router]);
-
-  const logout = () => {
-    localStorage.removeItem("username");
-    router.push("/")
-  };
-  
   return (
     <div>
       <h1>PortfolioPage</h1>
-      <button onClick={logout}>Remove Username</button>
+      {/* เนื้อหาของหน้า Portfolio */}
     </div>
   );
 };
-export default PortfolioPage;
+
+export default withAuth(PortfolioPage);

@@ -1,4 +1,5 @@
 "use client";
+import { useRouter } from "next/navigation";
 import React, { createContext, useState, useContext, useEffect } from "react";
 
 type AuthContextType = {
@@ -43,3 +44,36 @@ export const useAuth = () => {
   }
   return context;
 };
+
+// export const useRequireAuth = () => {
+//   const { isAuth } = useAuth();
+//   const router = useRouter();
+
+//   useEffect(() => {
+//     if (!isAuth) {
+//       router.push("/");
+//     }
+//   }, [isAuth, router]);
+
+//   return isAuth;
+// };
+
+
+export const withAuth = (WrappedComponent: React.ComponentType) => {
+    return function AuthenticatedComponent(props: any) {
+      const { isAuth } = useAuth();
+      const router = useRouter();
+  
+      useEffect(() => {
+        if (!isAuth) {
+          router.push('/');
+        }
+      }, [isAuth, router]);
+  
+      if (!isAuth) {
+        return null; // หรือ return <LoadingComponent />
+      }
+  
+      return <WrappedComponent {...props} />;
+    };
+  };
