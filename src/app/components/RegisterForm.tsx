@@ -1,20 +1,42 @@
 "use client";
 import React, { useState } from "react";
 import { RegisterType } from "../interfaces/auth";
+import { useRouter } from "next/navigation";
 
 const RegisterForm: React.FC = () => {
+  const router = useRouter();
   const [register, setRegister] = useState<RegisterType>({
     username: "",
     password: "",
     confirmPassword: "",
   });
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { username, password, confirmPassword } = register;
 
     if (password !== confirmPassword) {
       alert("password not match");
+    }
+    
+    try {
+      const res = await fetch("http://localhost:8080/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password, confirmPassword }),
+      });
+
+      if (res.ok) {
+        alert("Registration successful");
+        router.push("/login");
+      } else {
+        const error = await res.json();
+        alert(error.error);
+      }
+    } catch (error) {
+      console.error("Login error:", error);
     }
   };
 

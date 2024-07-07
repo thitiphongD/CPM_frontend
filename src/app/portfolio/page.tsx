@@ -1,8 +1,6 @@
 "use client";
-import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { withAuth } from "../components/AuthContext";
-import Link from "next/link";
 import { CoinData } from "../interfaces/coin";
 import DetailCoin from "../components/DetailCoin";
 
@@ -11,7 +9,6 @@ const PortfolioPage: React.FC = () => {
   const [username, setUsername] = useState<string | null>(null);
   const [data, setData] = useState<any>(null);
   const [openDetail, setOpenDetail] = useState<boolean>(false);
-  const router = useRouter();
 
   useEffect(() => {
     const getUsername = localStorage.getItem("username");
@@ -47,10 +44,7 @@ const PortfolioPage: React.FC = () => {
       fetchPortfolio();
     }
   }, [username]);
-
-  console.log('portfolioData', portfolioData);
   
-
   const handleCoinClick = (coin: CoinData) => {
     setOpenDetail(true);
     setData(coin);
