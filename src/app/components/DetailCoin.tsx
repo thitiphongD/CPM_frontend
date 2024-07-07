@@ -8,18 +8,25 @@ interface Props {
 
 const DetailCoin: React.FC<Props> = ({ coinData, onBack }) => {
   return (
-    <div>
-      <button onClick={onBack}>Back</button>
-      <h2>
-        {coinData.name} ({coinData.symbol})
-      </h2>
-      <p>Rank: {coinData.cmc_rank}</p>
-      <p>Price: ${coinData.price}</p>
-      <p>Quantity: {coinData.quantity}</p>
-      <p>Amount (USD): ${coinData.amount}</p>
-      <p>1h Change: {coinData.percent_change_1h}%</p>
-      <p>24h Change: {coinData.percent_change_24h}%</p>
-      <p>7d Change: {coinData.percent_change_7d}%</p>
+    <div className="fixed inset-0 z-50 overflow-auto flex justify-center items-center">
+      <div className="p-6 rounded-lg max-w-md border bg-[rgb(40, 40, 40)] border-[#343434]">
+        <p
+          className="flex items-center justify-end font-bold text-xl cursor-pointer hover:text-customYellow"
+          onClick={onBack}
+        >
+          X
+        </p>
+        <h2 className="text-xl font-bold mb-4">
+          {coinData.name} ({coinData.symbol})
+        </h2>
+        <p>Rank: {coinData.cmc_rank}</p>
+        <p>Price: ${coinData.price}</p>
+        <p>Quantity: {coinData.quantity}</p>
+        <p>Amount (USD): ${coinData.amount}</p>
+        <p>1h Change: {coinData.percent_change_1h}%</p>
+        <p>24h Change: {coinData.percent_change_24h}%</p>
+        <p>7d Change: {coinData.percent_change_7d}%</p>
+      </div>
     </div>
   );
 };

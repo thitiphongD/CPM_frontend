@@ -31,21 +31,21 @@ const Navbar: React.FC = () => {
 
         {isAuth ? (
           <div className="flex-center gap-4">
-            <button
-              className="inline-block align-baseline font-bold text-sm hover:text-customYellow"
-              onClick={handleLogout}
-            >
-              Logout
-            </button>
             <div className="all-center w-12 h-12 border border-[#7c7c7c] rounded-full">
               <Link className="text-xl font-bold text-white" href="/portfolio">
                 {username?.charAt(0).toUpperCase()}
               </Link>
             </div>
+            <button
+              className="font-bold text-sm default"
+              onClick={handleLogout}
+            >
+              Logout
+            </button>
           </div>
         ) : (
           <Link
-            className="inline-block align-baseline font-bold text-sm hover:text-customYellow"
+            className="font-bold text-sm default"
             href="/login"
           >
             Login
