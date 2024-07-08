@@ -12,7 +12,6 @@ export async function loginUserAction(prevState: any, formData: FormData) {
     return {
       ...prevState,
       zodErrors: validatedFields.error.flatten().fieldErrors,
-      strapiErrors: null,
       message: "Missing Fields. Failed to Register.",
     };
   }
@@ -22,7 +21,6 @@ export async function loginUserAction(prevState: any, formData: FormData) {
   if (!responseData) {
     return {
       ...prevState,
-      strapiErrors: null,
       zodErrors: null,
       message: "Ops! Something went wrong. Please try again.",
     };
@@ -31,21 +29,14 @@ export async function loginUserAction(prevState: any, formData: FormData) {
   if (responseData.error) {
     return {
       ...prevState,
-      strapiErrors: responseData.error,
       zodErrors: null,
       message: "Failed to Register.",
     };
   }
 
   console.log("#############");
-  console.log("User Login Successfully", responseData.jwt);
+  console.log("User Login Successfully", responseData);
   console.log("#############");
-
-  return {
-    ...prevState,
-    data: "OK",
-    // data: validatedFields.data, // กรณีอยาก log -hv,
-  };
 }
 
 export async function registerUserAction(prevState: any, formData: FormData) {
@@ -59,7 +50,6 @@ export async function registerUserAction(prevState: any, formData: FormData) {
     return {
       ...prevState,
       zodErrors: validatedFields.error.flatten().fieldErrors,
-      strapiErrors: null,
       message: "Missing Fields. Failed to Register.",
     };
   }
@@ -68,7 +58,6 @@ export async function registerUserAction(prevState: any, formData: FormData) {
   if (!responseData) {
     return {
       ...prevState,
-      strapiErrors: null,
       zodErrors: null,
       message: "Ops! Something went wrong. Please try again.",
     };
@@ -77,18 +66,12 @@ export async function registerUserAction(prevState: any, formData: FormData) {
   if (responseData.error) {
     return {
       ...prevState,
-      strapiErrors: responseData.error,
       zodErrors: null,
       message: "Failed to Register.",
     };
   }
 
   console.log("#############");
-  console.log("User Registered Successfully", responseData.jwt);
+  console.log("User Registered Successfully", responseData);
   console.log("#############");
-  return {
-    ...prevState,
-    data: "OK",
-    // data: validatedFields.data,
-  };
 }
