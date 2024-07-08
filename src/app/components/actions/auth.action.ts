@@ -1,27 +1,6 @@
 "use server";
-import { z } from "zod";
+import { schemaLogin, schemaRegister } from "@/app/schemas/auth";
 import { loginUserService, registerUserService } from "./auth.service";
-
-const schemaLogin = z.object({
-  username: z.string().min(3).max(20, {
-    message: "Username must be between 3 and 20 characters",
-  }),
-  password: z.string().min(6).max(100, {
-    message: "Password must be between 6 and 100 characters",
-  }),
-});
-
-const schemaRegister = z.object({
-  username: z.string().min(3).max(20, {
-    message: "Username must be between 3 and 20 characters",
-  }),
-  password: z.string().min(6).max(100, {
-    message: "Password must be between 6 and 100 characters",
-  }),
-  confirmPassword: z.string().min(6).max(100, {
-    message: "Password must be between 6 and 100 characters",
-  }),
-});
 
 export async function loginUserAction(prevState: any, formData: FormData) {
   const validatedFields = schemaLogin.safeParse({
