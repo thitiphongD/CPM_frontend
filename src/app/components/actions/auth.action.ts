@@ -40,15 +40,15 @@ export async function registerUserAction(prevState: any, formData: FormData) {
     password: z.string().min(6).max(100, {
       message: "Password must be between 6 and 100 characters",
     }),
-    email: z.string().email({
-      message: "Please enter a valid email address",
+    confirmPassword: z.string().min(6).max(100, {
+      message: "Password must be between 6 and 100 characters",
     }),
   });
 
   const validatedFields = schemaRegister.safeParse({
     username: formData.get("username"),
     password: formData.get("password"),
-    email: formData.get("email"),
+    confirmPassword: formData.get("confirmPassword"),
   });
 
   if (!validatedFields.success) {
@@ -63,5 +63,6 @@ export async function registerUserAction(prevState: any, formData: FormData) {
   return {
     ...prevState,
     data: "OK",
+    // data: validatedFields.data,
   };
 }

@@ -12,6 +12,8 @@ const INITIAL_STATE = {
 const LoginForm = () => {
   const [formState, formAction] = useFormState(loginUserAction, INITIAL_STATE);
 
+  console.log(formState);
+
   return (
     <form action={formAction}>
       <div className="mb-4">
