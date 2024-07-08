@@ -1,17 +1,8 @@
-interface RegisterUserProps {
-  username: string;
-  password: string;
-  confirmPassword: string;
-}
-
-interface LoginUserProps {
-  username: string;
-  password: string;
-}
+import { LoginProps, RegisterProps } from "@/app/interfaces/auth";
 
 const baseUrl = "localhost:8080";
 
-export async function loginUserService(userData: LoginUserProps) {
+export async function loginUserService(userData: LoginProps) {
   const url = new URL("/api/auth/local", baseUrl);
 
   try {
@@ -31,7 +22,7 @@ export async function loginUserService(userData: LoginUserProps) {
   }
 }
 
-export async function registerUserService(userData: RegisterUserProps) {
+export async function registerUserService(userData: RegisterProps) {
   const url = new URL("/api/auth/local/register", baseUrl);
 
   // เอา api มาใส่
