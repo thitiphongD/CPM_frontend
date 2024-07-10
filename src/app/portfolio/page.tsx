@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { withAuth } from "../components/AuthContext";
 import { CoinData } from "../interfaces/coin";
 import DetailCoin from "../components/DetailCoin";
-import CryptpForm from "../components/forms/CryptoForm";
+import CryptoForm from "../components/forms/CryptoForm";
 import useSWR from "swr";
 
 enum Display {
@@ -18,11 +18,9 @@ const fetcher = async (url: string) => {
       "Content-Type": "application/json",
     },
   });
-  
   if (!response.ok) {
     throw new Error("Failed to fetch portfolio");
   }
-  
   return response.json();
 };
 
@@ -36,7 +34,12 @@ const PortfolioPage: React.FC = () => {
     setUsername(storedUsername);
   }, []);
 
-  const { data: portfolioData, error, isValidating, mutate } = useSWR(
+  const {
+    data: portfolioData,
+    error,
+    isValidating,
+    mutate,
+  } = useSWR(
     username ? `http://localhost:8080/portfolio/${username}` : null,
     fetcher
   );
@@ -57,7 +60,7 @@ const PortfolioPage: React.FC = () => {
 
   const handleFormClose = () => {
     setDisplayState(Display.TABLE);
-    mutate(); // Revalidate data after form submission
+    mutate();
   };
 
   if (error) return <div>Failed to load portfolio</div>;
@@ -116,9 +119,7 @@ const PortfolioPage: React.FC = () => {
       )}
 
       {displayState === Display.FORM && (
-        <CryptpForm
-          onBack={handleFormClose}
-          mutate={mutate}        />
+        <CryptoForm onBack={handleFormClose} mutate={mutate} />
       )}
     </div>
   );
