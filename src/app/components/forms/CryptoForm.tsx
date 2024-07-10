@@ -47,7 +47,7 @@ const CryptpForm: React.FC<Props> = ({ onBack, setPortfolioData }) => {
         });
         if (res.ok) {
           const result = await res.json();
-          setPortfolioData(result?.data);
+          setPortfolioData(result);
           onBack();
         }
       } catch (error) {
