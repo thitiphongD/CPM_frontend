@@ -89,7 +89,7 @@ const PortfolioPage: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {portfolioData?.data.map((coin: CoinData) => (
+              {portfolioData?.data?.map((coin: CoinData) => (
                 <tr
                   key={coin.id}
                   onClick={() => handleCoinClick(coin)}
@@ -121,7 +121,12 @@ const PortfolioPage: React.FC = () => {
         <DetailCoin coinData={data} onBack={handleClose} />
       )}
 
-      {displayState === Display.FORM && <CryptpForm onBack={handleFormClose} />}
+      {displayState === Display.FORM && (
+        <CryptpForm
+          onBack={handleFormClose}
+          setPortfolioData={setPortfolioData}
+        />
+      )}
     </div>
   );
 };

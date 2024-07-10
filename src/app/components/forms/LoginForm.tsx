@@ -16,11 +16,6 @@ const LoginForm = () => {
   const { loginAuth } = useAuth();
   const router = useRouter();
 
-  const [formData, setFormData] = useState<FormLogin>({
-    username: "",
-    password: "",
-  });
-
   const formRef = useRef<FormLogin>({ username: "", password: "" });
 
   const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
@@ -31,7 +26,6 @@ const LoginForm = () => {
   const handleSubmit = useCallback(
     async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      setFormData({ ...formRef.current });
       try {
         const res = await fetch("http://localhost:8080/login", {
           method: "POST",

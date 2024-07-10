@@ -1,23 +1,10 @@
 "use client";
-import React, {
-  ChangeEvent,
-  useCallback,
-  useRef,
-  FormEvent,
-  useState,
-} from "react";
+import React, { ChangeEvent, useCallback, useRef, FormEvent } from "react";
 import { FormRegister } from "@/app/interfaces/auth";
 import { useRouter } from "next/navigation";
 
 const RegisterForm = () => {
   const router = useRouter();
-
-  const [formData, setFormData] = useState<FormRegister>({
-    username: "",
-    password: "",
-    confirmPassword: "",
-  });
-
   const formRef = useRef<FormRegister>({
     username: "",
     password: "",
@@ -32,7 +19,6 @@ const RegisterForm = () => {
   const handleSubmit = useCallback(
     async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      setFormData({ ...formRef.current });
       if (formRef.current.password !== formRef.current.confirmPassword) {
         alert("password not match");
       }

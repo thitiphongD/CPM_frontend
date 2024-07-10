@@ -1,47 +1,61 @@
 "use client";
 
-import React, {
-  ChangeEvent,
-  useCallback,
-  useRef,
-  FormEvent,
-  useState,
-} from "react";
+import React, { ChangeEvent, useCallback, useRef, FormEvent } from "react";
 import { ApiCoinResponse, FormCrypto } from "@/app/interfaces/coin";
 import useSWR from "swr";
 interface Props {
   onBack: () => void;
+  setPortfolioData: (data: any) => void;
 }
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-const CryptpForm: React.FC<Props> = ({ onBack }) => {
-  const [formData, setFormData] = useState<FormCrypto>({
-    id: 0,
-    quantity: 0,
-  });
-
-  const { data: coinsResponse, error } = useSWR<ApiCoinResponse>(
+const CryptpForm: React.FC<Props> = ({ onBack, setPortfolioData }) => {
+  const formRef = useRef<FormCrypto>({ id: 0, quantity: 0 });
+  const { data: response } = useSWR<ApiCoinResponse>(
     "http://localhost:8080/coins",
     fetcher
   );
 
-  const formRef = useRef<FormCrypto>({ id: 0, quantity: 0 });
+  const username = localStorage.getItem("username");
 
   const handleChange = useCallback(
     (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
       const { name, value } = e.target;
       const newValue = name === "id" ? parseInt(value, 10) : parseFloat(value);
       formRef.current[name as keyof FormCrypto] = newValue as never;
-      setFormData((prevData) => ({ ...prevData, [name]: newValue }));
     },
     []
   );
 
-  const handleSubmit = useCallback((e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log("Form submitted:", formRef.current);
-    // ที่นี่คุณสามารถเพิ่มโค้ดสำหรับการส่งข้อมูลไปยัง API หรือดำเนินการอื่น ๆ ตามต้องการ
-  }, []);
+  const handleSubmit = useCallback(
+    async (e: FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      const payload = {
+        ...formRef.current,
+        username,
+      };
+
+      console.log("payload", payload);
+
+      try {
+        const res = await fetch("http://localhost:8080/portfolio", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
+        if (res.ok) {
+          const result = await res.json();
+          setPortfolioData(result?.data);
+          onBack();
+        }
+      } catch (error) {
+        console.error("Add coin error:", error);
+      }
+    },
+    [onBack, setPortfolioData, username]
+  );
 
   return (
     <div className="fixed inset-0 z-50 overflow-auto bg-opacity-20 backdrop-blur-sm flex justify-center items-center">
@@ -58,14 +72,9 @@ const CryptpForm: React.FC<Props> = ({ onBack }) => {
               Add a new cryptocurrency
             </p>
             <br />
-            <select
-              name="id"
-              onChange={handleChange}
-              value={formData.id}
-              className="select-class"
-            >
+            <select name="id" onChange={handleChange} className="select-class">
               <option value={0}>Select a coin</option>
-              {coinsResponse?.data.map((coin) => (
+              {response?.data.map((coin) => (
                 <option key={coin.id} value={coin.id}>
                   {coin.name} ({coin.symbol})
                 </option>
