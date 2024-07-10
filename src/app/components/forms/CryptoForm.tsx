@@ -3,14 +3,17 @@
 import React, { ChangeEvent, useCallback, useRef, FormEvent } from "react";
 import { ApiCoinResponse, FormCrypto } from "@/app/interfaces/coin";
 import useSWR from "swr";
+
 interface Props {
   onBack: () => void;
-  setPortfolioData: (data: any) => void;
+  mutate: () => void;
 }
+
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-const CryptpForm: React.FC<Props> = ({ onBack, setPortfolioData }) => {
+const CryptoForm: React.FC<Props> = ({ onBack, mutate }) => {
   const formRef = useRef<FormCrypto>({ id: 0, quantity: 0 });
+
   const { data: response } = useSWR<ApiCoinResponse>(
     "http://localhost:8080/coins",
     fetcher
@@ -34,9 +37,7 @@ const CryptpForm: React.FC<Props> = ({ onBack, setPortfolioData }) => {
         ...formRef.current,
         username,
       };
-
-      console.log("payload", payload);
-
+      
       try {
         const res = await fetch("http://localhost:8080/portfolio", {
           method: "POST",
@@ -46,15 +47,14 @@ const CryptpForm: React.FC<Props> = ({ onBack, setPortfolioData }) => {
           body: JSON.stringify(payload),
         });
         if (res.ok) {
-          const result = await res.json();
-          setPortfolioData(result);
+          await mutate();
           onBack();
         }
       } catch (error) {
         console.error("Add coin error:", error);
       }
     },
-    [onBack, setPortfolioData, username]
+    [onBack, mutate, username]
   );
 
   return (
@@ -105,4 +105,4 @@ const CryptpForm: React.FC<Props> = ({ onBack, setPortfolioData }) => {
   );
 };
 
-export default CryptpForm;
+export default CryptoForm;

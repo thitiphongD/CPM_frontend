@@ -35,7 +35,7 @@ const CryptoTable: React.FC = () => {
         {coins.map((coin: any) => (
           <tr key={coin.id}>
             <td className="text-center">{coin.cmc_rank}</td>
-            <td className="cursor-pointer hover:text-customYellow">
+            <td className="cursor-pointer">
               <Link
                 className="inline-block align-baseline font-bold text-sm hover:text-customYellow"
                 href={`/coin/${coin.id}`}

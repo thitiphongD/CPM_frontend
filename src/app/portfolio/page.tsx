@@ -4,6 +4,7 @@ import { withAuth } from "../components/AuthContext";
 import { CoinData } from "../interfaces/coin";
 import DetailCoin from "../components/DetailCoin";
 import CryptpForm from "../components/forms/CryptoForm";
+import useSWR from "swr";
 
 enum Display {
   TABLE,
@@ -11,54 +12,43 @@ enum Display {
   FORM,
 }
 
+const fetcher = async (url: string) => {
+  const response = await fetch(url, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  
+  if (!response.ok) {
+    throw new Error("Failed to fetch portfolio");
+  }
+  
+  return response.json();
+};
+
 const PortfolioPage: React.FC = () => {
-  const [portfolioData, setPortfolioData] = useState<any>(null);
   const [username, setUsername] = useState<string | null>(null);
-  const [data, setData] = useState<any>(null);
   const [displayState, setDisplayState] = useState<Display>(Display.TABLE);
+  const [selectedCoin, setSelectedCoin] = useState<CoinData | null>(null);
 
   useEffect(() => {
-    const getUsername = localStorage.getItem("username");
-    setUsername(getUsername);
+    const storedUsername = localStorage.getItem("username");
+    setUsername(storedUsername);
   }, []);
 
-  useEffect(() => {
-    const fetchPortfolio = async () => {
-      if (!username) return;
-
-      try {
-        const response = await fetch(
-          `http://localhost:8080/portfolio/${username}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error("Fail to fetch portfolio");
-        }
-        const result = await response.json();
-        setPortfolioData(result);
-      } catch (err) {
-        console.error("Error fetch portfolio:", err);
-      }
-    };
-
-    if (username) {
-      fetchPortfolio();
-    }
-  }, [username]);
+  const { data: portfolioData, error, isValidating, mutate } = useSWR(
+    username ? `http://localhost:8080/portfolio/${username}` : null,
+    fetcher
+  );
 
   const handleCoinClick = (coin: CoinData) => {
     setDisplayState(Display.DETAIL);
-    setData(coin);
+    setSelectedCoin(coin);
   };
 
   const handleClose = () => {
     setDisplayState(Display.TABLE);
+    setSelectedCoin(null);
   };
 
   const handleFormOpen = () => {
@@ -67,7 +57,11 @@ const PortfolioPage: React.FC = () => {
 
   const handleFormClose = () => {
     setDisplayState(Display.TABLE);
+    mutate(); // Revalidate data after form submission
   };
+
+  if (error) return <div>Failed to load portfolio</div>;
+  if (isValidating) return <div>Loading...</div>;
 
   return (
     <div className="all-center">
@@ -96,7 +90,7 @@ const PortfolioPage: React.FC = () => {
                   style={{ cursor: "pointer" }}
                 >
                   <td className="text-center">{coin.cmc_rank}</td>
-                  <td>
+                  <td className="cursor-pointer hover:text-customYellow font-bold">
                     {coin.name} ({coin.symbol})
                   </td>
                   <td>${coin.price}</td>
@@ -117,15 +111,14 @@ const PortfolioPage: React.FC = () => {
         </div>
       )}
 
-      {displayState === Display.DETAIL && Display && (
-        <DetailCoin coinData={data} onBack={handleClose} />
+      {displayState === Display.DETAIL && selectedCoin && (
+        <DetailCoin coinData={selectedCoin} onBack={handleClose} />
       )}
 
       {displayState === Display.FORM && (
         <CryptpForm
           onBack={handleFormClose}
-          setPortfolioData={setPortfolioData}
-        />
+          mutate={mutate}        />
       )}
     </div>
   );
