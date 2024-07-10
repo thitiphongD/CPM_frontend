@@ -16,12 +16,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [isAuth, setIsAuth] = useState(false);
 
-
-
-//   const [isAuth, setIsAuth] = useState<AuthLogin>({
-//     username: '',
-//     isLogin: false
-//   });
+  //   const [isAuth, setIsAuth] = useState<AuthLogin>({
+  //     username: '',
+  //     isLogin: false
+  //   });
 
   useEffect(() => {
     const username = localStorage.getItem("username");
@@ -53,23 +51,21 @@ export const useAuth = () => {
   return context;
 };
 
-
-
 export const withAuth = (WrapComponent: React.ComponentType) => {
-    return function AuthenticatedComponent(props: any) {
-      const { isAuth } = useAuth();
-      const router = useRouter();      
-  
-      useEffect(() => {
-        if (!isAuth) {
-          router.push('/');
-        }
-      }, [isAuth, router]);
-  
+  return function AuthenticatedComponent(props: any) {
+    const { isAuth } = useAuth();
+    const router = useRouter();
+
+    useEffect(() => {
       if (!isAuth) {
-        return null; // หรือ return <LoadingComponent />
+        router.push("/");
       }
-  
-      return <WrapComponent {...props} />;
-    };
+    }, [isAuth, router]);
+
+    if (!isAuth) {
+      return null; // หรือ return <LoadingComponent />
+    }
+
+    return <WrapComponent {...props} />;
   };
+};

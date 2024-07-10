@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { withAuth } from "../components/AuthContext";
 import { CoinData } from "../interfaces/coin";
 import DetailCoin from "../components/DetailCoin";
-import FormCrypto from "../components/FormCrypto";
+import CryptpForm from "../components/forms/CryptoForm";
 
 enum Display {
   TABLE,
@@ -121,7 +121,7 @@ const PortfolioPage: React.FC = () => {
         <DetailCoin coinData={data} onBack={handleClose} />
       )}
 
-      {displayState === Display.FORM && <FormCrypto onBack={handleFormClose} />}
+      {displayState === Display.FORM && <CryptpForm onBack={handleFormClose} />}
     </div>
   );
 };

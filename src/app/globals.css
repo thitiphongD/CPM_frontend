@@ -22,6 +22,17 @@ input {
   border-radius: 4px;
 }
 
+.select-class {
+  background: #212121;
+  border: 1px solid #343434;
+  outline: none;
+  padding: 2px;
+  padding-left: 4px;
+  border-radius: 4px;
+  width: 100%;
+  height: 45px;
+}
+
 th {
   font-weight: 900;
   font-size: small;
