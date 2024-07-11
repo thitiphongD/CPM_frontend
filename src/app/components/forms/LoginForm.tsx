@@ -20,12 +20,12 @@ const LoginForm = () => {
       e.preventDefault();
       try {
         const res = await loginService(formRef.current);
-        if (res.status === 401) {
-          alert("Username or password incorrect");
-        }
         if (res.ok) {
           loginAuth(formRef.current.username);
           router.push("/portfolio");
+        } else {
+          const error = await res.json();
+          alert(error.error);
         }
       } catch (error) {
         console.error("Login error:", error);

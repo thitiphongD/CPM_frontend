@@ -2,6 +2,7 @@
 import React, { ChangeEvent, useCallback, useRef, FormEvent } from "react";
 import { FormRegister } from "@/app/interfaces/auth";
 import { useRouter } from "next/navigation";
+import { registerService } from "@/app/services/auth.service";
 
 const RegisterForm = () => {
   const router = useRouter();
@@ -19,18 +20,8 @@ const RegisterForm = () => {
   const handleSubmit = useCallback(
     async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      if (formRef.current.password !== formRef.current.confirmPassword) {
-        alert("password not match");
-      }
       try {
-        const res = await fetch("http://localhost:8080/register", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formRef.current),
-        });
-
+        const res = await registerService(formRef.current);
         if (res.ok) {
           alert("Registration successful");
           router.push("/login");
@@ -42,7 +33,7 @@ const RegisterForm = () => {
         console.error("Login error:", error);
       }
     },
-    [router]
+    [router],
   );
 
   return (
