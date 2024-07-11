@@ -1,20 +1,22 @@
 "use client";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "./AuthContext";
+import { useAuth } from "../auth/useAuth";
 
 const Navbar: React.FC = () => {
   const { isAuth, logoutAuth } = useAuth();
   const router = useRouter();
+  const [username, setUsername] = useState<string | null>(null);
+
+  useEffect(() => {
+    setUsername(localStorage.getItem("username"));
+  }, [isAuth]); // Re-run when isAuth changes
 
   const handleLogout = () => {
     logoutAuth();
     router.push("/");
   };
-
-  const username =
-    typeof window !== "undefined" ? localStorage.getItem("username") : null;
 
   return (
     <nav className="flex-center gap-10 border-b border-[#343434] p-4">
@@ -28,7 +30,6 @@ const Navbar: React.FC = () => {
         >
           Home
         </Link>
-
         {isAuth ? (
           <div className="flex-center gap-4">
             <div className="all-center w-12 h-12 border border-[#7c7c7c] rounded-full">
@@ -44,10 +45,7 @@ const Navbar: React.FC = () => {
             </button>
           </div>
         ) : (
-          <Link
-            className="font-bold text-sm default"
-            href="/login"
-          >
+          <Link className="font-bold text-sm default" href="/login">
             Login
           </Link>
         )}

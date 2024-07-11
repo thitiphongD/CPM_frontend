@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { withAuth } from "../components/AuthContext";
 import { CoinData } from "../interfaces/coin";
 import DetailCoin from "../components/DetailCoin";
 import CryptoForm from "../components/forms/CryptoForm";
@@ -41,7 +40,7 @@ const PortfolioPage: React.FC = () => {
     mutate,
   } = useSWR(
     username ? `http://localhost:8080/portfolio/${username}` : null,
-    fetcher
+    fetcher,
   );
 
   const handleCoinClick = (coin: CoinData) => {
@@ -125,4 +124,4 @@ const PortfolioPage: React.FC = () => {
   );
 };
 
-export default withAuth(PortfolioPage);
+export default PortfolioPage;

@@ -1,23 +1,15 @@
 "use client";
 
-import React, {
-  ChangeEvent,
-  useCallback,
-  useRef,
-  FormEvent,
-  useState,
-} from "react";
-
-import { useAuth } from "../AuthContext";
+import React, { ChangeEvent, useCallback, useRef, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { FormLogin } from "@/app/interfaces/auth";
+import { useAuth } from "@/app/auth/useAuth";
+import { loginService } from "@/app/services/auth.service";
 
 const LoginForm = () => {
   const { loginAuth } = useAuth();
   const router = useRouter();
-
   const formRef = useRef<FormLogin>({ username: "", password: "" });
-
   const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     formRef.current[name as keyof FormLogin] = value;
@@ -27,14 +19,10 @@ const LoginForm = () => {
     async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       try {
-        const res = await fetch("http://localhost:8080/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formRef.current),
-        });
-
+        const res = await loginService(formRef.current);
+        if (res.status === 401) {
+          alert("Username or password incorrect");
+        }
         if (res.ok) {
           loginAuth(formRef.current.username);
           router.push("/portfolio");
@@ -43,7 +31,7 @@ const LoginForm = () => {
         console.error("Login error:", error);
       }
     },
-    [loginAuth, router]
+    [loginAuth, router],
   );
 
   return (
