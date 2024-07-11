@@ -19,7 +19,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="flex-center gap-10 border-b border-[#343434] p-4">
+    <nav className="flex-center gap-10 border-b border-[#343434] py-4 px-40">
       <div className="flex-center gap-2">
         <h1 className="text-3xl font-bold text-customYellow">CPM</h1>
       </div>

@@ -5,6 +5,7 @@ import DetailCoin from "../components/DetailCoin";
 import CryptoForm from "../components/forms/CryptoForm";
 import useSWR from "swr";
 import CryptoCard from "../components/CryptoCard";
+import Loading from "../components/ui/Loading";
 
 enum Display {
   TABLE,
@@ -64,24 +65,29 @@ const PortfolioPage: React.FC = () => {
   };
 
   if (error) return <div>Failed to load portfolio</div>;
-  if (isValidating) return <div>Loading...</div>;
 
   return (
     <div className="px-40">
-      {displayState === Display.TABLE && (
+      {isValidating ? (
+        <Loading />
+      ) : (
         <>
-          <button className="primary mt-4" onClick={handleFormOpen}>
-            Add
-          </button>
-          <CryptoCard data={portfolioData?.data} />
-        </>
-      )}
-      {displayState === Display.DETAIL && selectedCoin && (
-        <DetailCoin coinData={selectedCoin} onBack={handleClose} />
-      )}
+          {displayState === Display.TABLE && (
+            <>
+              <button className="primary mt-4" onClick={handleFormOpen}>
+                Add
+              </button>
+              <CryptoCard data={portfolioData?.data} />
+            </>
+          )}
+          {displayState === Display.DETAIL && selectedCoin && (
+            <DetailCoin coinData={selectedCoin} onBack={handleClose} />
+          )}
 
-      {displayState === Display.FORM && (
-        <CryptoForm onBack={handleFormClose} mutate={mutate} />
+          {displayState === Display.FORM && (
+            <CryptoForm onBack={handleFormClose} mutate={mutate} />
+          )}
+        </>
       )}
     </div>
   );
