@@ -4,6 +4,7 @@ import { CoinData } from "../interfaces/coin";
 import DetailCoin from "../components/DetailCoin";
 import CryptoForm from "../components/forms/CryptoForm";
 import useSWR from "swr";
+import CryptoCard from "../components/CryptoCard";
 
 enum Display {
   TABLE,
@@ -66,53 +67,15 @@ const PortfolioPage: React.FC = () => {
   if (isValidating) return <div>Loading...</div>;
 
   return (
-    <div className="all-center">
+    <div className="px-40">
       {displayState === Display.TABLE && (
-        <div>
-          <table className="w-3/4">
-            <thead>
-              <tr>
-                <th className="w-20 h-12 text-center">Rank</th>
-                <th>Coin</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Amount (USD)</th>
-                <th>1h</th>
-                <th>24h</th>
-                <th>7d</th>
-                <th>24h Volume</th>
-                <th>Market Cap</th>
-              </tr>
-            </thead>
-            <tbody>
-              {portfolioData?.data?.map((coin: CoinData) => (
-                <tr
-                  key={coin.id}
-                  onClick={() => handleCoinClick(coin)}
-                  className="cursor-pointer"
-                >
-                  <td className="text-center">{coin.cmc_rank}</td>
-                  <td className="cursor-pointer hover:text-customYellow font-bold">
-                    {coin.name} ({coin.symbol})
-                  </td>
-                  <td>${coin.price}</td>
-                  <td>{coin.quantity.toFixed(2)}</td>
-                  <td>${coin.amount}</td>
-                  <td>{coin.percent_change_1h}%</td>
-                  <td>{coin.percent_change_24h}%</td>
-                  <td>{coin.percent_change_7d}%</td>
-                  <td>${coin.volume_24h}</td>
-                  <td>${coin.market_cap}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <>
           <button className="primary mt-4" onClick={handleFormOpen}>
             Add
           </button>
-        </div>
+          <CryptoCard data={portfolioData?.data} />
+        </>
       )}
-
       {displayState === Display.DETAIL && selectedCoin && (
         <DetailCoin coinData={selectedCoin} onBack={handleClose} />
       )}
