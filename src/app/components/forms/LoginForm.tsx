@@ -1,5 +1,4 @@
 "use client";
-
 import React, { ChangeEvent, useCallback, useRef, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { FormLogin } from "@/app/interfaces/auth";
@@ -9,19 +8,20 @@ import { loginService } from "@/app/services/auth.service";
 const LoginForm = () => {
   const { loginAuth } = useAuth();
   const router = useRouter();
-  const formRef = useRef<FormLogin>({ username: "", password: "" });
+  const form = useRef<FormLogin>({ username: "", password: "" });
+
   const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    formRef.current[name as keyof FormLogin] = value;
+    form.current[name as keyof FormLogin] = value;
   }, []);
 
   const handleSubmit = useCallback(
     async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       try {
-        const res = await loginService(formRef.current);
+        const res = await loginService(form.current);
         if (res.ok) {
-          loginAuth(formRef.current.username);
+          loginAuth(form.current.username);
           router.push("/portfolio");
         } else {
           const error = await res.json();

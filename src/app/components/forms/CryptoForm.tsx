@@ -1,8 +1,13 @@
 "use client";
 
 import React, { ChangeEvent, useCallback, useRef, FormEvent } from "react";
-import { ApiCoinResponse, FormCrypto } from "@/app/interfaces/coin";
+import {
+  ApiCoinResponse,
+  FormCrypto,
+  FormCryptoPayload,
+} from "@/app/interfaces/coin";
 import useSWR from "swr";
+import { addCoinService } from "@/app/services/coin.service";
 
 interface Props {
   onBack: () => void;
@@ -12,49 +17,41 @@ interface Props {
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const CryptoForm: React.FC<Props> = ({ onBack, mutate }) => {
-  const formRef = useRef<FormCrypto>({ id: 0, quantity: 0 });
+  const form = useRef<FormCrypto>({ id: 0, quantity: 0 });
+  const username = localStorage.getItem("username");
 
   const { data: response } = useSWR<ApiCoinResponse>(
     "http://localhost:8080/coins",
-    fetcher
+    fetcher,
   );
-
-  const username = localStorage.getItem("username");
 
   const handleChange = useCallback(
     (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
       const { name, value } = e.target;
       const newValue = name === "id" ? parseInt(value, 10) : parseFloat(value);
-      formRef.current[name as keyof FormCrypto] = newValue as never;
+      form.current[name as keyof FormCrypto] = newValue as never;
     },
-    []
+    [],
   );
 
   const handleSubmit = useCallback(
     async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      const payload = {
-        ...formRef.current,
+      const payload: FormCryptoPayload = {
+        ...form.current,
         username,
       };
-      
       try {
-        const res = await fetch("http://localhost:8080/portfolio", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        });
+        const res = await addCoinService(payload);
         if (res.ok) {
-          await mutate();
+          mutate();
           onBack();
         }
       } catch (error) {
         console.error("Add coin error:", error);
       }
     },
-    [onBack, mutate, username]
+    [onBack, mutate, username],
   );
 
   return (

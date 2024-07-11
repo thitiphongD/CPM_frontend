@@ -18,6 +18,12 @@ export interface FormCrypto {
   quantity: number;
 }
 
+export interface FormCryptoPayload {
+  id: number;
+  quantity: number;
+  username: string | null;
+}
+
 export interface CoinList {
   id: number;
   name: string;

@@ -6,7 +6,7 @@ import { registerService } from "@/app/services/auth.service";
 
 const RegisterForm = () => {
   const router = useRouter();
-  const formRef = useRef<FormRegister>({
+  const form = useRef<FormRegister>({
     username: "",
     password: "",
     confirmPassword: "",
@@ -14,14 +14,14 @@ const RegisterForm = () => {
 
   const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    formRef.current[name as keyof FormRegister] = value;
+    form.current[name as keyof FormRegister] = value;
   }, []);
 
   const handleSubmit = useCallback(
     async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       try {
-        const res = await registerService(formRef.current);
+        const res = await registerService(form.current);
         if (res.ok) {
           alert("Registration successful");
           router.push("/login");

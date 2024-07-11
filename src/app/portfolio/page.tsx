@@ -89,7 +89,7 @@ const PortfolioPage: React.FC = () => {
                 <tr
                   key={coin.id}
                   onClick={() => handleCoinClick(coin)}
-                  style={{ cursor: "pointer" }}
+                  className="cursor-pointer"
                 >
                   <td className="text-center">{coin.cmc_rank}</td>
                   <td className="cursor-pointer hover:text-customYellow font-bold">

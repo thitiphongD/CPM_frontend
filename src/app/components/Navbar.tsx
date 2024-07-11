@@ -4,14 +4,14 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../auth/useAuth";
 
-const Navbar: React.FC = () => {
+const Navbar = () => {
   const { isAuth, logoutAuth } = useAuth();
   const router = useRouter();
   const [username, setUsername] = useState<string | null>(null);
 
   useEffect(() => {
     setUsername(localStorage.getItem("username"));
-  }, [isAuth]); // Re-run when isAuth changes
+  }, [isAuth]);
 
   const handleLogout = () => {
     logoutAuth();
