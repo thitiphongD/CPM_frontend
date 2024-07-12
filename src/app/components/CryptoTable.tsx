@@ -5,11 +5,17 @@ import Link from "next/link";
 import Loading from "./ui/Loading";
 import Image from "next/image";
 import useIsMobile from "../hooks/useIsMobile";
+import { useAuth } from "../auth/useAuth";
 
 const CryptoTable: React.FC = () => {
   const fetcher = (url: string) => fetch(url).then((res) => res.json());
   const { data } = useSWR("http://localhost:8080/coinsList/v2", fetcher);
   const isMobile = useIsMobile();
+  const { isAuth } = useAuth();
+  const [username, setUsername] = useState<string | null>(null);
+  useEffect(() => {
+    setUsername(localStorage.getItem("username"));
+  }, [isAuth]);
 
   if (!data) return <Loading />;
 
@@ -17,7 +23,19 @@ const CryptoTable: React.FC = () => {
     <>
       {isMobile ? (
         // Mobile view (Card)
+
         <div className="flex flex-col pt-2 px-4">
+          <div className="flex items-center justify-between">
+            <p className="text-xl font-semibold py-4">Cryptocurency</p>
+            {username && (
+              <div className="all-center w-12 h-12 border border-[#7c7c7c] rounded-full">
+                <span className="text-xl font-bold text-white">
+                  {username?.charAt(0).toUpperCase()}
+                </span>
+              </div>
+            )}
+          </div>
+
           {data.map((coin: any) => (
             <div
               key={coin.id}
@@ -35,7 +53,7 @@ const CryptoTable: React.FC = () => {
                   <p className="font-normal text-[#7c7c7c]">{coin.symbol}</p>
                 </div>
               </div>
-              <div>
+              <div className="text-right">
                 <p className="font-normal text-[#7c7c7c]">
                   ${coin.quote.USD.price.toFixed(2)}
                 </p>
