@@ -45,6 +45,8 @@ const PortfolioPage: React.FC = () => {
     fetcher,
   );
 
+  console.log('data', portfolioData)
+
   const handleCoinClick = (coin: CoinData) => {
     setDisplayState(Display.DETAIL);
     setSelectedCoin(coin);
