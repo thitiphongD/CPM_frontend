@@ -3,12 +3,12 @@ import React from "react";
 import { CoinData } from "../interfaces/coin";
 
 interface Props {
-  data?: CoinData[]; // Make data optional with `?` if it might be undefined initially
+  data?: CoinData[];
 }
 
 const CryptoCard: React.FC<Props> = ({ data }) => {
   if (!data || !Array.isArray(data)) {
-    return null; // Return early or render a fallback component if data is undefined or not an array
+    return null;
   }
 
   return (
