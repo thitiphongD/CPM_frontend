@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "./components/Navbar";
 import { AuthProvider } from "./auth/AuthProvider";
 import Footer from "./components/Footer";
+import NavMenuButtom from "./components/NavMenuButtom";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -25,7 +26,12 @@ export default function RootLayout({
             <Navbar />
           </div>
           {children}
-          <Footer />
+          <div className="hidden lg:block">
+            <Footer />
+          </div>
+          <div className="block lg:hidden">
+            <NavMenuButtom />
+          </div>
         </AuthProvider>
       </body>
     </html>
