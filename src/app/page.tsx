@@ -1,12 +1,35 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CryptoTable from "./components/CryptoTable";
+import useSWR from "swr";
+import useIsMobile from "./hooks/useIsMobile";
+import { useAuth } from "./auth/useAuth";
+import Loading from "./components/ui/Loading";
+import CryptoCard from "./components/CryptoCard";
+
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const Home = () => {
+  const { data } = useSWR("http://localhost:8080/coinsList/v2", fetcher);
+  const isMobile = useIsMobile();
+  const { isAuth } = useAuth();
+  const [username, setUsername] = useState<string | null>(null);
+
+  useEffect(() => {
+    setUsername(localStorage.getItem("username"));
+  }, [isAuth]);
+
+  if (!data) return <Loading />;
   return (
-    <div className="all-center pb-20">
-      <CryptoTable />
-    </div>
+    <>
+      <div className="all-center pb-20">
+        {isMobile ? (
+          <CryptoCard data={data} username={username} />
+        ) : (
+          <CryptoTable data={data} />
+        )}
+      </div>
+    </>
   );
 };
 

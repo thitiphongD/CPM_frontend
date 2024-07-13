@@ -1,47 +1,59 @@
 "use client";
 import React from "react";
-import { CoinData } from "../interfaces/coin";
+import { CoinType } from "../interfaces/coin";
+import Image from "next/image";
 
 interface Props {
-  data?: CoinData[];
+  data: CoinType[];
+  username: string | null;
 }
 
-const CryptoCard: React.FC<Props> = ({ data }) => {
+const CryptoCard: React.FC<Props> = ({ data , username}) => {
   if (!data || !Array.isArray(data)) {
     return null;
   }
 
   return (
-    <div className="crypto-cards-container">
-      {data.map((coin) => (
-        <div key={coin.id} className="coin-card">
-          <h5 className="mb-2 text-2xl font-bold tracking-tight text-white">
-            {coin.name}
-          </h5>
+    <div className="flex flex-col pt-2 px-4">
+    <div className="flex items-center justify-between">
+      <p className="text-xl font-semibold py-4">Cryptocurrency</p>
+      {username && (
+        <div className="all-center w-12 h-12 border border-[#7c7c7c] rounded-full">
+          <span className="text-xl font-bold text-white">
+            {username?.charAt(0).toUpperCase()}
+          </span>
+        </div>
+      )}
+    </div>
+
+    {data.map((coin: CoinType) => (
+      <div
+        key={coin.id}
+        className="coin-card w-full mt-2 border rounded-lg flex justify-between items-start"
+      >
+        <div className="flex-center gap-4">
+          <Image
+            src={coin.logo}
+            width={30}
+            height={30}
+            alt={`${coin.name} logo`}
+          />
+          <div>
+            <p className="font-bold">{coin.name}</p>
+            <p className="font-normal text-[#7c7c7c]">{coin.symbol}</p>
+          </div>
+        </div>
+        <div className="text-right">
           <p className="font-normal text-[#7c7c7c]">
-            Symbol: {coin.symbol}
-            <br />
-            Rank: {coin.cmc_rank}
-            <br />
-            Price: {coin.price}
-            <br />
-            Percent Change (1h): {coin.percent_change_1h}
-            <br />
-            Percent Change (24h): {coin.percent_change_24h}
-            <br />
-            Percent Change (7d): {coin.percent_change_7d}
-            <br />
-            Volume (24h): {coin.volume_24h}
-            <br />
-            Market Cap: {coin.market_cap}
-            <br />
-            Quantity: {coin.quantity}
-            <br />
-            Amount: {coin.amount}
+            ${coin.quote.USD.price.toFixed(2)}
+          </p>
+          <p className="font-normal text-[#7c7c7c]">
+            {coin.quote.USD.percent_change_24h.toFixed(2)}%
           </p>
         </div>
-      ))}
-    </div>
+      </div>
+    ))}
+  </div>
   );
 };
 
