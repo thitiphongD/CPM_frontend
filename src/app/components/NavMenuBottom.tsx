@@ -6,7 +6,7 @@ import { useAuth } from "../auth/useAuth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-const NavMenuButtom = () => {
+const NavMenuBottom = () => {
   const { isAuth, logoutAuth } = useAuth();
   const router = useRouter();
   const [username, setUsername] = useState<string | null>(null);
@@ -61,4 +61,4 @@ const NavMenuButtom = () => {
   );
 };
 
-export default NavMenuButtom;
+export default NavMenuBottom;
