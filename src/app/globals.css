@@ -3,123 +3,123 @@
 @tailwind utilities;
 
 body {
-    color: white;
-    background: #1c1c1c;
-    margin: 0;
-    padding: 0;
+  color: white;
+  background: #1c1c1c;
+  margin: 0;
+  padding: 0;
 }
 
 @layer utilities {
-    .text-balance {
-        text-wrap: balance;
-    }
+  .text-balance {
+    text-wrap: balance;
+  }
 }
 
 input {
-    background: #212121;
-    border: 1px solid #343434;
-    outline: none;
-    padding: 4px;
-    padding-left: 10px;
-    border-radius: 4px;
+  background: #212121;
+  border: 1px solid #343434;
+  outline: none;
+  padding: 4px;
+  padding-left: 10px;
+  border-radius: 4px;
 }
 
 .select-class {
-    background: #212121;
-    border: 1px solid #343434;
-    outline: none;
-    padding: 2px;
-    padding-left: 4px;
-    border-radius: 4px;
-    width: 100%;
-    height: 45px;
+  background: #212121;
+  border: 1px solid #343434;
+  outline: none;
+  padding: 2px;
+  padding-left: 4px;
+  border-radius: 4px;
+  width: 100%;
+  height: 45px;
 }
 
 th {
-    font-weight: 900;
-    font-size: small;
-    border-bottom: 1px solid #343434;
-    text-align: left;
-    padding: 20px 20px 20px 20px;
+  font-weight: 900;
+  font-size: small;
+  border-bottom: 1px solid #343434;
+  text-align: left;
+  padding: 20px 20px 20px 20px;
 }
 
 td {
-    color: #7c7c7c;
-    font-size: small;
-    border-bottom: 1px solid #343434;
-    padding: 16px 16px 16px 16px;
+  color: #7c7c7c;
+  font-size: small;
+  border-bottom: 1px solid #343434;
+  padding: 16px 16px 16px 16px;
 }
 
 .all-center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .flex-center {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .flex-center-between {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .default {
-    background: rgb(40, 40, 40);
-    padding: 5px 10px 5px 10px;
-    border-radius: 5px;
-    border: 1px solid #343434;
+  background: rgb(40, 40, 40);
+  padding: 5px 10px 5px 10px;
+  border-radius: 5px;
+  border: 1px solid #343434;
 }
 
 .primary {
-    background: rgb(252, 208, 0);
-    padding: 5px 10px 5px 10px;
-    border-radius: 5px;
-    color: #343434;
-    font-weight: 600;
+  background: rgb(252, 208, 0);
+  padding: 5px 10px 5px 10px;
+  border-radius: 5px;
+  color: #343434;
+  font-weight: 600;
 }
 .primary:hover {
-    background: rgb(255, 229, 102);
+  background: rgb(255, 229, 102);
 }
 
 .danger {
-    background: rgb(244, 67, 54);
-    padding: 5px 10px 5px 10px;
-    border-radius: 5px;
-    border: rgb(244, 67, 54) solid 1px;
+  background: rgb(244, 67, 54);
+  padding: 5px 10px 5px 10px;
+  border-radius: 5px;
+  border: rgb(244, 67, 54) solid 1px;
 }
 
 .coin-card {
-    padding: 1.5rem;
-    background-color: #232323;
-    border: 1px solid #343434;
-    border-radius: 0.5rem;
-    transition: background-color 0.3s ease-in-out;
-    cursor: pointer;
+  padding: 1.5rem;
+  background-color: #232323;
+  border: 1px solid #343434;
+  border-radius: 0.5rem;
+  transition: background-color 0.3s ease-in-out;
+  cursor: pointer;
 }
 
 .coin-card:hover {
-    background-color: #2c2c2c;
+  background-color: #2c2c2c;
 }
 
 .crypto-cards-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1rem;
-    margin-top: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
 }
 
 @media screen and (max-width: 768px) {
-    .crypto-cards-container {
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    }
+  .crypto-cards-container {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
 }
 
 @media screen and (max-width: 480px) {
-    .crypto-cards-container {
-        grid-template-columns: 1fr;
-    }
+  .crypto-cards-container {
+    grid-template-columns: 1fr;
+  }
 }

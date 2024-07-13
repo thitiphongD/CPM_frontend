@@ -10,3 +10,11 @@ export const addCoinService = async (payload: FormCryptoPayload) => {
   });
   return response;
 };
+
+export const getCoinData = async (id: string) => {
+  const res = await fetch(`http://localhost:8080/coin/${id}`);
+  if (!res.ok) {
+    throw new Error('Failed to fetch data');
+  }
+  return res.json();
+}

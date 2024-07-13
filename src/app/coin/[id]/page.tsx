@@ -1,6 +1,8 @@
-"use client";
-import React, { useEffect, useState } from "react";
+"use server";
+
+import React from "react";
 import Image from "next/image";
+import { getCoinData } from "@/app/services/coin.service";
 
 interface Coin {
   params: {
@@ -8,56 +10,55 @@ interface Coin {
   };
 }
 
-const CoinPage: React.FC<Coin> = ({ params }) => {
-  const [coinData, setCoinData] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchCoinData = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:8080/coin/${params.id}`
-        );
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const data = await response.json();
-        setCoinData(data);
-        setLoading(false);
-      } catch (error: any) {
-        console.error("Error fetching data:", error);
-        setError(error);
-        setLoading(false);
-      }
-    };
-    fetchCoinData();
-  }, [params.id]);
-
-  if (!coinData || !coinData.data) return null; // Handle case where coinData or coinData.data is null
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
-  if (!coinData) return null;
-
-  console.log('coin data', coinData)
+const CoinPage: React.FC<Coin> = async ({ params }) => {
+  const coin = await getCoinData(params.id);
 
   return (
-    <div className="w-3/4 py-4 px-10">
-      <div className="flex-center gap-4">
+    <div className="p-6 lg:py-6 lg:px-40">
+      <div className="flex-center gap-4 block lg:hidden">
         <Image
-          src={coinData.data[params.id]?.logo}
-          width={50}
-          height={50}
-          alt="Picture of the author"
+          src={coin.logo}
+          width={30}
+          height={30}
+          alt={`${coin.name} logo`}
         />
-        <p>
-          {coinData.data[params.id]?.name} ({coinData.data[params.id]?.symbol})
+        <div className="flex-center gap-2">
+          <p>{coin.name}</p>
+          <p>({coin.symbol})</p>
+        </div>
+      </div>
+      <br />
+
+      <div className="flex justify-center items-center mb-4">
+        <Image
+          src={coin.logo}
+          width={70}
+          height={70}
+          alt={`${coin.name} logo`}
+        />
+      </div>
+      <div className="text-center">
+        <p className="hidden lg:block text-2xl font-bold">
+          {coin.name} ({coin.symbol})
         </p>
       </div>
-      <div className="py-4">
-        <p>{coinData.data[params.id]?.description}</p>
+
+      <div className="text-center mb-10">
+        <p>${coin.quote.USD.price.toFixed(2)} USD</p>
+        <div className="flex justify-center items-center gap-2">
+          <p>{coin.quote.USD.volume_24h.toFixed(2)}</p>
+          <p>|</p>
+          <p> {coin.quote.USD.percent_change_24h.toFixed(2)}%</p>
+          <p>|</p>
+          <p>{coin.quote.USD.market_cap.toFixed(2)}</p>
+        </div>
       </div>
+      <div>
+        <p className="text-2xl font-bold">About</p>
+        <br />
+        <p>{coin.description}</p>
+      </div>
+      <button className="primary w-full mt-10 lg:w-40 font-bold">Buy</button>
     </div>
   );
 };

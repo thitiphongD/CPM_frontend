@@ -13,6 +13,7 @@ const CryptoCard: React.FC<Props> = ({ data, username }) => {
   if (!data || !Array.isArray(data)) {
     return null;
   }
+  
 
   return (
     <div className="flex flex-col pt-2 px-4">

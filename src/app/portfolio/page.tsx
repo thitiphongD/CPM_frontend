@@ -45,8 +45,6 @@ const PortfolioPage: React.FC = () => {
     fetcher,
   );
 
-  console.log('data', portfolioData)
-
   const handleCoinClick = (coin: CoinData) => {
     setDisplayState(Display.DETAIL);
     setSelectedCoin(coin);
@@ -79,7 +77,7 @@ const PortfolioPage: React.FC = () => {
               <button className="primary mt-4" onClick={handleFormOpen}>
                 Add
               </button>
-              <CryptoCard data={portfolioData?.data} />
+              {/* <CryptoCard data={portfolioData?.data} /> */}
             </>
           )}
           {displayState === Display.DETAIL && selectedCoin && (
