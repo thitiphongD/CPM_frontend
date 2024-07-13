@@ -36,7 +36,7 @@ const NavMenuBottom = () => {
               href="/portfolio"
             >
               <Icon path={mdiChartPie} size={1} />
-              Portfolo
+              Portfolio
             </Link>
           </div>
           <div className="text-center">
