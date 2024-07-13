@@ -36,11 +36,11 @@ const CoinPage: React.FC<Coin> = ({ params }) => {
 
   if (!coinData || !coinData.data) return null; // Handle case where coinData or coinData.data is null
 
-  // console.log("coinData", coinData);
-
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
   if (!coinData) return null;
+
+  console.log('coin data', coinData)
 
   return (
     <div className="w-3/4 py-4 px-10">
