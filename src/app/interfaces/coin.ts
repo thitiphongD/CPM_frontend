@@ -15,12 +15,12 @@ export interface CoinData {
 
 export interface FormCrypto {
   id: number;
-  quantity: number;
+  quantity: string;
 }
 
 export interface FormCryptoPayload {
   id: number;
-  quantity: number;
+  quantity: string;
   username: string | null;
 }
 
@@ -54,6 +54,7 @@ interface Quote {
 }
 
 export interface CoinType {
+  amount: number | null;
   id: number;
   name: string;
   symbol: string;
@@ -62,4 +63,5 @@ export interface CoinType {
   quote: Quote;
   logo: string;
   description: string;
+  quantity: number | null;
 }

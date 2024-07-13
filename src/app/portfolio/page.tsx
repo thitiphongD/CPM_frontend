@@ -25,8 +25,6 @@ const PortfolioPage: React.FC = () => {
 
   if (error) return <div>Failed to load portfolio</div>;
 
-  console.log("portfolioData", portfolioData);
-
   return (
     <div className="lg:px-40">
       {isLoading ? (

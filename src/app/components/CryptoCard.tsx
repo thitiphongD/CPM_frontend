@@ -26,7 +26,7 @@ const CryptoCard: React.FC<Props> = ({ data, username }) => {
 
   if (!data || !Array.isArray(data)) {
     return null;
-  }  
+  }
 
   return (
     <div className="flex flex-col pt-2 px-4 w-full">
@@ -52,15 +52,12 @@ const CryptoCard: React.FC<Props> = ({ data, username }) => {
       )}
 
       {data.map((coin: CoinType) => (
-        <div
-          key={coin.id}
-          className="coin-card w-full mt-2 border rounded-lg flex justify-between items-start"
-        >
+        <div key={coin.id} className="coin-card w-full mt-2 border rounded-lg">
           <Link
             href={`/coin/${coin.id}`}
             className="flex w-full justify-between items-start no-underline"
           >
-            <div className="flex-center gap-4 col-span-2">
+            <div className="flex items-start gap-4 col-span-2">
               <Image
                 src={coin.logo}
                 width={30}
@@ -68,8 +65,18 @@ const CryptoCard: React.FC<Props> = ({ data, username }) => {
                 alt={`${coin.name} logo`}
               />
               <div>
-                <p className="font-bold">{coin.name}</p>
+                <p className="font-bold">{coin.name} </p>
                 <p className="font-normal text-[#7c7c7c]">{coin.symbol}</p>
+                {coin.quantity && (
+                  <p className="font-normal text-[#7c7c7c]">
+                    Quantity {coin.quantity.toFixed(2)}
+                  </p>
+                )}
+                {coin.amount && (
+                  <p className="font-normal text-[#7c7c7c]">
+                    Amount {coin.amount.toFixed(2)}
+                  </p>
+                )}
               </div>
             </div>
             <div className="text-right col-span-1">
