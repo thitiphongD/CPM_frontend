@@ -1,9 +1,10 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CoinType } from "../interfaces/coin";
 import Image from "next/image";
 import Link from "next/link";
 import useIsMobile from "../hooks/useIsMobile";
+import { usePathname } from "next/navigation";
 
 interface Props {
   data: CoinType[];
@@ -12,17 +13,26 @@ interface Props {
 
 const CryptoCard: React.FC<Props> = ({ data, username }) => {
   const isMobile = useIsMobile();
+  const [title, setTitle] = useState("");
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (pathname === "/") {
+      setTitle("Cryptocurrency");
+    } else if (pathname === "/portfolio") {
+      setTitle("Portfolio");
+    }
+  }, [pathname]);
 
   if (!data || !Array.isArray(data)) {
     return null;
-  }
-
+  }  
 
   return (
     <div className="flex flex-col pt-2 px-4 w-full">
       {isMobile ? (
         <div className="flex items-center justify-between">
-          <p className="text-xl font-semibold py-4">Cryptocurrency</p>
+          <p className="text-xl font-semibold py-4">{title}</p>
           {username && (
             <div className="all-center w-12 h-12 border border-[#7c7c7c] rounded-full">
               <span className="text-xl font-bold text-white">
@@ -46,7 +56,10 @@ const CryptoCard: React.FC<Props> = ({ data, username }) => {
           key={coin.id}
           className="coin-card w-full mt-2 border rounded-lg flex justify-between items-start"
         >
-          <Link href={`/coin/${coin.id}`}  className="flex w-full justify-between items-start no-underline">
+          <Link
+            href={`/coin/${coin.id}`}
+            className="flex w-full justify-between items-start no-underline"
+          >
             <div className="flex-center gap-4 col-span-2">
               <Image
                 src={coin.logo}
