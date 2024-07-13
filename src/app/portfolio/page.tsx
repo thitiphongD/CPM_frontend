@@ -44,7 +44,7 @@ const PortfolioPage: React.FC = () => {
     username ? `http://localhost:8080/portfolio/${username}` : null,
     fetcher,
   );
-
+  
   const handleCoinClick = (coin: CoinData) => {
     setDisplayState(Display.DETAIL);
     setSelectedCoin(coin);
@@ -85,7 +85,7 @@ const PortfolioPage: React.FC = () => {
           )}
 
           {displayState === Display.FORM && (
-            <CryptoForm onBack={handleFormClose} mutate={mutate} />
+            <CryptoForm data={portfolioData} onBack={handleFormClose} refresh={mutate} />
           )}
         </>
       )}

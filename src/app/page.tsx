@@ -10,7 +10,7 @@ import CryptoCard from "./components/CryptoCard";
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const Home = () => {
-  const { data } = useSWR("http://localhost:8080/coinsList/v2", fetcher);
+  const { data } = useSWR("http://localhost:8080/coins", fetcher);
   const isMobile = useIsMobile();
   const { isAuth } = useAuth();
   const [username, setUsername] = useState<string | null>(null);

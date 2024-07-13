@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { CoinType } from "../interfaces/coin";
 import Image from "next/image";
 import Link from "next/link";
@@ -10,13 +10,15 @@ interface Props {
 }
 
 const CryptoCard: React.FC<Props> = ({ data, username }) => {
+
   if (!data || !Array.isArray(data)) {
     return null;
   }
-  
+
 
   return (
-    <div className="flex flex-col pt-2 px-4">
+
+    <div className="flex flex-col pt-2 px-4 w-full">
       <div className="flex items-center justify-between">
         <p className="text-xl font-semibold py-4">Cryptocurrency</p>
         {username && (

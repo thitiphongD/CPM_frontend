@@ -10,13 +10,14 @@ import useSWR from "swr";
 import { addCoinService } from "@/app/services/coin.service";
 
 interface Props {
+  data: any;
   onBack: () => void;
-  mutate: () => void;
+  refresh: () => void;
 }
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-const CryptoForm: React.FC<Props> = ({ onBack, mutate }) => {
+const CryptoForm: React.FC<Props> = ({ onBack, refresh }) => {
   const form = useRef<FormCrypto>({ id: 0, quantity: 0 });
   const username = localStorage.getItem("username");
 
@@ -44,14 +45,14 @@ const CryptoForm: React.FC<Props> = ({ onBack, mutate }) => {
       try {
         const res = await addCoinService(payload);
         if (res.ok) {
-          mutate();
+          refresh();
           onBack();
         }
       } catch (error) {
         console.error("Add coin error:", error);
       }
     },
-    [onBack, mutate, username],
+    [onBack, refresh, username],
   );
 
   return (
