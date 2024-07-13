@@ -27,13 +27,13 @@ const PortfolioPage: React.FC = () => {
   const {
     data: portfolioData,
     error,
-    isValidating,
-    mutate,
+    isLoading,
+    // mutate,
   } = useSWR(
     username ? `http://localhost:8080/portfolio/${username}` : null,
-    fetcherPOST,
+    fetcherPOST
   );
-  
+
   const handleCoinClick = (coin: CoinData) => {
     setDisplayState(Display.DETAIL);
     setSelectedCoin(coin);
@@ -50,32 +50,29 @@ const PortfolioPage: React.FC = () => {
 
   const handleFormClose = () => {
     setDisplayState(Display.TABLE);
-    mutate();
+    // mutate();
   };
 
   if (error) return <div>Failed to load portfolio</div>;
 
   return (
-    <div className="px-40">
-      {isValidating ? (
+    <div className="lg:px-40">
+      {isLoading ? (
         <Loading />
       ) : (
         <>
           {displayState === Display.TABLE && (
             <>
-              <button className="primary mt-4" onClick={handleFormOpen}>
-                Add
-              </button>
-              {/* <CryptoCard data={portfolioData?.data} /> */}
+              <CryptoCard data={portfolioData} username={username} />
             </>
           )}
           {displayState === Display.DETAIL && selectedCoin && (
             <DetailCoin coinData={selectedCoin} onBack={handleClose} />
           )}
 
-          {displayState === Display.FORM && (
+          {/* {displayState === Display.FORM && (
             <CryptoForm data={portfolioData} onBack={handleFormClose} refresh={mutate} />
-          )}
+          )} */}
         </>
       )}
     </div>
