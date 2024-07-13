@@ -8,7 +8,7 @@ import React, {
 import { CoinType, FormCrypto, FormCryptoPayload } from "@/app/interfaces/coin";
 import { addCoinService } from "@/app/services/coin.service";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 interface Props {
   data: CoinType;
@@ -18,10 +18,18 @@ interface Props {
 
 const CryptoForm: React.FC<Props> = ({ onBack, refresh, data }) => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+
   const [formData, setFormData] = useState<FormCrypto>({
     id: data.id,
     quantity: "",
   });
+
+  const isAdd = searchParams.get("isAdd");
+  const isEdit = searchParams.get("isEdit");
+
+  console.log("isAdd", isAdd);
+  console.log("isEdit", isEdit);
 
   const [amount, setAmount] = useState(0);
   const username = localStorage.getItem("username");
@@ -60,17 +68,22 @@ const CryptoForm: React.FC<Props> = ({ onBack, refresh, data }) => {
         username,
       };
       try {
-        const res = await addCoinService(payload);
-        if (res.ok) {
-          alert('buy success')
-          refresh();
-          router.push("/portfolio");
+        if (isAdd) {
+          const res = await addCoinService(payload);
+          if (res.ok) {
+            alert("buy success");
+            refresh();
+            router.push("/portfolio");
+          } 
+        }
+        if (isEdit) {
+          alert('รอ API')
         }
       } catch (error) {
         console.error("Add coin error:", error);
       }
     },
-    [formData, refresh, router, username]
+    [formData, isAdd, isEdit, refresh, router, username]
   );
 
   const displayAmount = isNaN(amount) ? 0 : amount;
@@ -102,8 +115,8 @@ const CryptoForm: React.FC<Props> = ({ onBack, refresh, data }) => {
             </div>
             <div>
               <p>Amount: ${displayAmount.toFixed(2)}</p>
-              <p>Quantity: {formData.quantity || '0'}</p>
-              </div>
+              <p>Quantity: {formData.quantity || "0"}</p>
+            </div>
             <button className="primary w-full" type="submit">
               Buy
             </button>

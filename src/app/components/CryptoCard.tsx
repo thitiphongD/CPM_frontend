@@ -54,7 +54,11 @@ const CryptoCard: React.FC<Props> = ({ data, username }) => {
       {data.map((coin: CoinType) => (
         <div key={coin.id} className="coin-card w-full mt-2 border rounded-lg">
           <Link
-            href={`/coin/${coin.id}`}
+           href={{
+            pathname: `/coin/${coin.id}`,
+            query: pathname === "/" ? { isAdd: "true" } : pathname === "/portfolio" ? { isEdit: "true" } : {}
+          }}
+            
             className="flex w-full justify-between items-start no-underline"
           >
             <div className="flex items-start gap-4 col-span-2">
