@@ -6,11 +6,11 @@ import useIsMobile from "./hooks/useIsMobile";
 import { useAuth } from "./auth/useAuth";
 import Loading from "./components/ui/Loading";
 import CryptoCard from "./components/CryptoCard";
+import { fetcherGET } from "./utils/fetcher";
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const Home = () => {
-  const { data } = useSWR("http://localhost:8080/coins", fetcher);
+  const { data } = useSWR("http://localhost:8080/coins", fetcherGET);
   const isMobile = useIsMobile();
   const { isAuth } = useAuth();
   const [username, setUsername] = useState<string | null>(null);

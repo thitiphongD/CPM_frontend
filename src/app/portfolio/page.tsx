@@ -6,24 +6,13 @@ import CryptoForm from "../components/forms/CryptoForm";
 import useSWR from "swr";
 import CryptoCard from "../components/CryptoCard";
 import Loading from "../components/ui/Loading";
+import { fetcherPOST } from "../utils/fetcher";
 
 enum Display {
   TABLE,
   DETAIL,
   FORM,
 }
-
-const fetcher = async (url: string) => {
-  const response = await fetch(url, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  if (!response.ok) {
-    throw new Error("Failed to fetch portfolio");
-  }
-  return response.json();
-};
 
 const PortfolioPage: React.FC = () => {
   const [username, setUsername] = useState<string | null>(null);
@@ -42,7 +31,7 @@ const PortfolioPage: React.FC = () => {
     mutate,
   } = useSWR(
     username ? `http://localhost:8080/portfolio/${username}` : null,
-    fetcher,
+    fetcherPOST,
   );
   
   const handleCoinClick = (coin: CoinData) => {
