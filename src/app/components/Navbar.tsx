@@ -26,7 +26,7 @@ const Navbar = () => {
         </Link>
       </div>
       <div className="flex-center gap-4">
-        {isAuth ? (
+        {isAuth.login ? (
           <div className="flex-center gap-4">
             <Link
               className="inline-flex flex-col items-center default font-bold text-sm "

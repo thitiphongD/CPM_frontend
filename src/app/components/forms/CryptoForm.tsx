@@ -5,7 +5,12 @@ import React, {
   useEffect,
   FormEvent,
 } from "react";
-import { CoinType, FormCrypto, FormCryptoPayload, FormCryptoUpdatePayload } from "@/app/interfaces/coin";
+import {
+  CoinType,
+  FormCrypto,
+  FormCryptoPayload,
+  FormCryptoUpdatePayload,
+} from "@/app/interfaces/coin";
 import { addCoinService, updateCoinService } from "@/app/services/coin.service";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -22,7 +27,6 @@ const CryptoForm: React.FC<Props> = ({ onBack, refresh, data }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { isAuth } = useAuth();
-
   const username = isAuth.username;
 
   const [formData, setFormData] = useState<FormCrypto>({
@@ -33,10 +37,13 @@ const CryptoForm: React.FC<Props> = ({ onBack, refresh, data }) => {
   const isAdd = searchParams.get("isAdd");
   const isEdit = searchParams.get("isEdit");
 
-  console.log("isAdd", isAdd);
-  console.log("isEdit", isEdit);
-
   const [amount, setAmount] = useState(0);
+
+  useEffect(() => {
+    const quantity = parseFloat(formData.quantity);
+    const calculatedAmount = quantity * data.quote.USD.price;
+    setAmount(isNaN(calculatedAmount) ? 0 : calculatedAmount);
+  }, [formData.quantity, data.quote.USD.price]);
 
   const handleChange = useCallback(
     (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -53,24 +60,16 @@ const CryptoForm: React.FC<Props> = ({ onBack, refresh, data }) => {
     []
   );
 
-  useEffect(() => {
-    const quantity = parseFloat(formData.quantity);
-    const calculatedAmount = quantity * data.quote.USD.price;
-    setAmount(isNaN(calculatedAmount) ? 0 : calculatedAmount);
-  }, [formData.quantity, data.quote.USD.price]);
-
   const handleSubmit = useCallback(
     async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-  
-      console.log(formData);
-      
+
       const quantity = parseFloat(formData.quantity);
       if (isNaN(quantity) || quantity <= 0) {
         alert("Please enter a valid quantity");
         return;
       }
-  
+
       try {
         if (isAdd) {
           const payload: FormCryptoPayload = {
@@ -82,7 +81,7 @@ const CryptoForm: React.FC<Props> = ({ onBack, refresh, data }) => {
             alert("buy success");
             refresh();
             router.push("/portfolio");
-          } 
+          }
         }
         if (isEdit && formData.id) {
           const payloadUpdate: FormCryptoUpdatePayload = {
@@ -91,16 +90,16 @@ const CryptoForm: React.FC<Props> = ({ onBack, refresh, data }) => {
           };
           const update = await updateCoinService(formData.id, payloadUpdate);
           if (update.ok) {
-            alert('Update success');
+            alert("Update success");
             refresh();
             router.push("/portfolio");
           } else {
-            alert('Update failed');
+            alert("Update fail");
           }
         }
       } catch (error) {
-        console.error("Operation error:", error);
-        alert('An error occurred');
+        console.error("error:", error);
+        alert("An error occurred");
       }
     },
     [formData, isAdd, isEdit, refresh, router, username]
