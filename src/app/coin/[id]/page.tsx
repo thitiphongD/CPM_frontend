@@ -4,9 +4,9 @@ import React, { useState } from "react";
 import Image from "next/image";
 import useSWR from "swr";
 import CryptoForm from "@/app/components/forms/CryptoForm";
-import { fetcherGET } from "@/app/utils/fetcher";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/auth/AuthProvider";
+import { fetcherGET } from "@/app/services/user.service";
 
 interface Coin {
   params: {

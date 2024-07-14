@@ -18,3 +18,7 @@ export interface FormCrypto {
   id: number;
   quantity: number;
 }
+
+export enum ErrorType {
+  COIN_NOT_FOUND = "COIN_NOT_FOUND"
+}

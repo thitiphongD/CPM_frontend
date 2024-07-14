@@ -28,7 +28,7 @@ const CryptoCard: React.FC<Props> = ({ data, username }) => {
     return null;
   }
 
-  const onDeleteCoin = async (id: number) => {    
+  const onDeleteCoin = async (id: number) => {
     if (window.confirm("Are you sure you want to delete this coin?")) {
       try {
         const res = await deleteCoinService(id.toString(), username);
@@ -114,11 +114,13 @@ const CryptoCard: React.FC<Props> = ({ data, username }) => {
               </p>
             </div>
           </Link>
-          <div className="flex justify-end">
-            <button className="danger" onClick={() => onDeleteCoin(coin.id)}>
-              Delete
-            </button>
-          </div>
+          {pathname === "/portfolio" && (
+            <div className="flex justify-end">
+              <button className="danger" onClick={() => onDeleteCoin(coin.id)}>
+                Delete
+              </button>
+            </div>
+          )}
         </div>
       ))}
     </div>

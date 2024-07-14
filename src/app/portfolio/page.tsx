@@ -1,14 +1,17 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import useSWR from "swr";
 import CryptoCard from "../components/CryptoCard";
+import CoinNotFound from "../components/CoinNotFound";
 import { useAuth } from "../auth/AuthProvider";
-import { fetchUser } from "../utils/fetcher";
 import Loading from "../components/ui/Loading";
+import { getPortfolioService } from "../services/user.service";
+import { ErrorType } from "../interfaces/auth";
 
 const PortfolioPage: React.FC = () => {
   const { isAuth } = useAuth();
   const username = isAuth.username;
+  const [notFound, setNotFound] = useState<boolean>(false);
 
   const {
     data: portfolioData,
@@ -16,18 +19,29 @@ const PortfolioPage: React.FC = () => {
     isLoading,
   } = useSWR(
     username ? ["http://localhost:8080/portfolio", username] : null,
-    ([url, username]) => fetchUser(url, username)
+    ([url, username]) => getPortfolioService(url, username),
+    {
+      onError: (err) => {
+        if (err.message === ErrorType.COIN_NOT_FOUND) {
+          setNotFound(true);
+        }
+      },
+    }
   );
 
-  if (error) return <div>Failed to load portfolio</div>;
-  if (isLoading) return <Loading />;
-  
   return (
-    <div className="lg:px-40">
-      <div>
-        <CryptoCard data={portfolioData} username={username} />
+    <>
+      {isLoading && <Loading />}
+      <div className="lg:px-40">
+        <div>
+          {!notFound ? (
+            <CryptoCard data={portfolioData} username={username} />
+          ) : (
+            <CoinNotFound />
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
