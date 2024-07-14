@@ -8,7 +8,7 @@ const Navbar = () => {
   const { isAuth, logoutAuth } = useAuth();
   const router = useRouter();
   const username = isAuth.username;
-  
+
   const handleLogout = () => {
     logoutAuth();
     router.push("/");
@@ -47,9 +47,14 @@ const Navbar = () => {
             </div>
           </div>
         ) : (
-          <Link className="font-bold text-sm default" href="/login">
-            Login
-          </Link>
+          <div className="flex-center gap-4">
+            <Link className="font-bold text-sm default" href="/login">
+              Login
+            </Link>
+            <Link className="font-bold text-sm default" href="/register">
+              Register
+            </Link>
+          </div>
         )}
       </div>
     </nav>

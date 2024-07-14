@@ -14,6 +14,9 @@ import {
 import { addCoinService, updateCoinService } from "@/app/services/coin.service";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/app/auth/AuthProvider";
+import Image from "next/image";
+import Icon from "@mdi/react";
+import { mdiArrowLeft } from "@mdi/js";
 
 interface Props {
   data: CoinType;
@@ -106,19 +109,33 @@ const CryptoForm: React.FC<Props> = ({ onBack, refresh, data }) => {
 
   return (
     <div className="p-4">
-      <div className="all-center gap-4">
-        <p>{data.name}</p>
-        <p>{data.symbol}</p>
+      <button onClick={onBack} className="pl-10 pt-2 lg:hidden">
+        <Icon path={mdiArrowLeft} size={1.5} />
+      </button>
+      <div className="all-center gap-4 pt-2">
+        <Image
+          src={data.logo}
+          width={40}
+          height={40}
+          alt={`${data.name} logo`}
+          className="rounded-full"
+        />
+        <div className="flex items-center gap-1">
+          <p>{data.name}</p>
+          <p>({data.symbol})</p>
+        </div>
       </div>
-      <div className="text-center">
-        <p>ESTIMATE BUYING PRICE</p>
-        <p>${data.quote.USD.price.toFixed(2)}</p>
+      <div className="text-center mt-10 leading-loose">
+        <p className="font-bold text-md text-[#7c7c7c]">
+          ESTIMATE BUYING PRICE
+        </p>
+        <p className="text-2xl font-bold">${data.quote.USD.price.toFixed(2)}</p>
       </div>
-      <div className="text-center">
-        How much do you want to buy?
+      <div className="mt-4">
+        <p className="mb-4 text-center font-bold text-md text-[#7c7c7c]"> How much do you want to buy?</p>
         <div className="flex items-center justify-center">
           <form onSubmit={handleSubmit}>
-            <div className="mb-4 flex gap-2">
+            <div className="mb-4 flex gap-2 items-center">
               <input
                 name="quantity"
                 type="number"
@@ -126,12 +143,19 @@ const CryptoForm: React.FC<Props> = ({ onBack, refresh, data }) => {
                 className="placeholder-[#7c7c7c] p-2 hover:text-hoverYellow"
                 onChange={handleChange}
                 value={formData.quantity || ""}
+                required
               />
+              <p className="font-bold text-xl text-[#7c7c7c]">{data.symbol}</p>
             </div>
             <div>
-              <p>Amount: ${displayAmount.toFixed(2)}</p>
-              <p>Quantity: {formData.quantity || "0"}</p>
+              <p className="font-bold text-md text-[#7c7c7c]">
+                Quantity: {formData.quantity || "0"}
+              </p>
+              <p className="font-bold text-md text-[#7c7c7c]">
+                Amount: ${displayAmount.toFixed(2)}
+              </p>
             </div>
+            <br />
             <button className="primary w-full" type="submit">
               Buy
             </button>

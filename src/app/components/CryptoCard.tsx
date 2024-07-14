@@ -4,7 +4,7 @@ import { CoinType } from "../interfaces/coin";
 import Image from "next/image";
 import Link from "next/link";
 import useIsMobile from "../hooks/useIsMobile";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { deleteCoinService } from "../services/coin.service";
 import Icon from "@mdi/react";
 import { mdiTrashCan } from "@mdi/js";
@@ -13,13 +13,19 @@ interface Props {
   data: CoinType[] | any;
   username: string | null;
   mutate: () => void;
-  showDelete: boolean
+  showDelete: boolean;
 }
 
-const CryptoCard: React.FC<Props> = ({ data, username, mutate, showDelete }) => {
+const CryptoCard: React.FC<Props> = ({
+  data,
+  username,
+  mutate,
+  showDelete,
+}) => {
   const isMobile = useIsMobile();
   const [title, setTitle] = useState("");
   const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     if (pathname === "/") {
@@ -28,17 +34,25 @@ const CryptoCard: React.FC<Props> = ({ data, username, mutate, showDelete }) => 
       setTitle("Portfolio");
     }
   }, [pathname]);
+
   if (!data || !Array.isArray(data)) {
     return null;
   }
 
-  const onDeleteCoin = async (id: number) => {
+  const onDeleteCoin = async (
+    e: React.MouseEvent<HTMLButtonElement>,
+    id: number
+  ) => {
+    e.preventDefault();
+    e.stopPropagation();
+
     if (window.confirm("Are you sure delete this coin?")) {
       try {
         const res = await deleteCoinService(id.toString(), username);
         if (res.ok) {
           alert(`Delete coin with ID ${id}`);
           mutate();
+          router.push("/portfolio");
         } else {
           const error = await res.json();
           alert(`Fail to delete coin: ${error}`);
@@ -76,10 +90,7 @@ const CryptoCard: React.FC<Props> = ({ data, username, mutate, showDelete }) => 
 
       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {data.map((coin: CoinType) => (
-          <div
-            key={coin.id}
-            className="coin-card border rounded-lg p-4 flex flex-col"
-          >
+          <div key={coin.id} className="coin-card border rounded-lg p-4">
             <Link
               href={{
                 pathname: `/coin/${coin.id}`,
@@ -90,7 +101,7 @@ const CryptoCard: React.FC<Props> = ({ data, username, mutate, showDelete }) => 
                     ? { isEdit: "true" }
                     : {},
               }}
-              className="flex flex-col h-full no-underline"
+              className="flex-grow no-underline"
             >
               <div className="flex items-start justify-between gap-4 mb-4">
                 <div className="flex items-start gap-2">
@@ -135,17 +146,18 @@ const CryptoCard: React.FC<Props> = ({ data, username, mutate, showDelete }) => 
                     </p>
                   )}
                 </div>
-
-                {showDelete && (
-                  <button
-                    className="danger"
-                    onClick={() => onDeleteCoin(coin.id)}
-                  >
-                    <Icon path={mdiTrashCan} size={1} />
-                  </button>
-                )}
               </div>
             </Link>
+            {showDelete && (
+              <div className="text-right">
+                <button
+                  className="danger"
+                  onClick={(e) => onDeleteCoin(e, coin.id)}
+                >
+                  <Icon path={mdiTrashCan} size={1} />
+                </button>
+              </div>
+            )}
           </div>
         ))}
       </div>
