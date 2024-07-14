@@ -14,13 +14,18 @@ export interface CoinData {
 }
 
 export interface FormCrypto {
-  id: number;
+  id: any;
   quantity: string;
 }
 
 export interface FormCryptoPayload {
   id: number;
   quantity: string;
+  username: string | null;
+}
+
+export interface FormCryptoUpdatePayload {
+  quantity: any;
   username: string | null;
 }
 

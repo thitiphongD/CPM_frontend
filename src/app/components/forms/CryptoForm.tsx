@@ -5,11 +5,12 @@ import React, {
   useEffect,
   FormEvent,
 } from "react";
-import { CoinType, FormCrypto, FormCryptoPayload } from "@/app/interfaces/coin";
-import { addCoinService } from "@/app/services/coin.service";
+import { CoinType, FormCrypto, FormCryptoPayload, FormCryptoUpdatePayload } from "@/app/interfaces/coin";
+import { addCoinService, updateCoinService } from "@/app/services/coin.service";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/app/auth/AuthProvider";
+import { string } from "zod";
 
 interface Props {
   data: CoinType;
@@ -61,17 +62,21 @@ const CryptoForm: React.FC<Props> = ({ onBack, refresh, data }) => {
   const handleSubmit = useCallback(
     async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
+  
+      console.log(formData);
+      
       const quantity = parseFloat(formData.quantity);
       if (isNaN(quantity) || quantity <= 0) {
         alert("Please enter a valid quantity");
         return;
       }
-      const payload: FormCryptoPayload = {
-        ...formData,
-        username,
-      };
+  
       try {
         if (isAdd) {
+          const payload: FormCryptoPayload = {
+            ...formData,
+            username,
+          };
           const res = await addCoinService(payload);
           if (res.ok) {
             alert("buy success");
@@ -79,11 +84,23 @@ const CryptoForm: React.FC<Props> = ({ onBack, refresh, data }) => {
             router.push("/portfolio");
           } 
         }
-        if (isEdit) {
-          alert('รอ API')
+        if (isEdit && formData.id) {
+          const payloadUpdate: FormCryptoUpdatePayload = {
+            quantity,
+            username,
+          };
+          const update = await updateCoinService(formData.id, payloadUpdate);
+          if (update.ok) {
+            alert('Update success');
+            refresh();
+            router.push("/portfolio");
+          } else {
+            alert('Update failed');
+          }
         }
       } catch (error) {
-        console.error("Add coin error:", error);
+        console.error("Operation error:", error);
+        alert('An error occurred');
       }
     },
     [formData, isAdd, isEdit, refresh, router, username]

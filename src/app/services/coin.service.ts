@@ -1,14 +1,25 @@
-import { FormCryptoPayload } from "../interfaces/coin";
+import { FormCryptoPayload, FormCryptoUpdatePayload } from "../interfaces/coin";
 
 export const addCoinService = async (payload: FormCryptoPayload) => {
-  const response = await fetch("http://localhost:8080/portfolio", {
+  const res = await fetch("http://localhost:8080/portfolio/buy", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(payload),
   });
-  return response;
+  return res;
+};
+
+export const updateCoinService = async (id: string, payload: FormCryptoUpdatePayload) => {
+  const res = await fetch(`http://localhost:8080/portfolio/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+  return res;
 };
 
 export const getCoinData = async (id: string) => {

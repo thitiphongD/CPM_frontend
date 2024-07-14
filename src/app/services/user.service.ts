@@ -1,7 +1,14 @@
-export const getPortfolioService = async (username: string) => {
-    const res = await fetch(`http://localhost:8080/portfolio/${username}`);
-    if (!res.ok) {
-        throw new Error('Failed to fetch data');
+export const getData = async (url: string, username: string) => {
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username }),
+    });
+
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
     }
-    return res.json();
+    return response.json();
 }

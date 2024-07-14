@@ -7,7 +7,7 @@ import useIsMobile from "../hooks/useIsMobile";
 import { usePathname } from "next/navigation";
 
 interface Props {
-  data: CoinType[];
+  data: CoinType[] | any;
   username: string | null;
 }
 

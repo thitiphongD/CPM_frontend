@@ -1,14 +1,8 @@
 export const fetcherGET = (url: string) => fetch(url).then((res) => res.json());
 
-
-export const fetcherPOST = async (url: string) => {
-    const response = await fetch(url, {
-        headers: {
-            "Content-Type": "application/json",
-        },
-    });
-    if (!response.ok) {
-        throw new Error("Failed to fetch portfolio");
-    }
-    return response.json();
-};
+export const fetchUser = (url: string, username: string) =>
+    fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: username }),
+    }).then(res => res.json());
