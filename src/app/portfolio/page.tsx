@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { CoinData } from "../interfaces/coin";
 import useSWR from "swr";
 import CryptoCard from "../components/CryptoCard";
 import Loading from "../components/ui/Loading";

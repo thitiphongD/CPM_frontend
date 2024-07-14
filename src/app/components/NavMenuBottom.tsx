@@ -2,9 +2,9 @@
 import { mdiChartPie, mdiHome, mdiLogin, mdiLogout } from "@mdi/js";
 import Icon from "@mdi/react";
 import React, { useEffect, useState } from "react";
-import { useAuth } from "../auth/useAuth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useAuth } from "../auth/AuthProvider";
 
 const NavMenuBottom = () => {
   const { isAuth, logoutAuth } = useAuth();

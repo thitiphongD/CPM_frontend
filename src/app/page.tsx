@@ -3,10 +3,10 @@ import React, { useEffect, useState } from "react";
 import CryptoTable from "./components/CryptoTable";
 import useSWR from "swr";
 import useIsMobile from "./hooks/useIsMobile";
-import { useAuth } from "./auth/useAuth";
 import Loading from "./components/ui/Loading";
 import CryptoCard from "./components/CryptoCard";
 import { fetcherGET } from "./utils/fetcher";
+import { useAuth } from "./auth/AuthProvider";
 
 
 const Home = () => {

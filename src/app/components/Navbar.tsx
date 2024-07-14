@@ -2,7 +2,7 @@
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "../auth/useAuth";
+import { useAuth } from "../auth/AuthProvider";
 
 const Navbar = () => {
   const { isAuth, logoutAuth } = useAuth();

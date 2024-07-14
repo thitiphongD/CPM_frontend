@@ -5,8 +5,8 @@ import Image from "next/image";
 import useSWR from "swr";
 import CryptoForm from "@/app/components/forms/CryptoForm";
 import { fetcherGET } from "@/app/utils/fetcher";
-import { useAuth } from "@/app/auth/useAuth";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/app/auth/AuthProvider";
 
 interface Coin {
   params: {
