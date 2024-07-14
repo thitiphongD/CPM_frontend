@@ -8,6 +8,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { deleteCoinService } from "../services/coin.service";
 import Icon from "@mdi/react";
 import { mdiTrashCan } from "@mdi/js";
+import Modal from "./ui/Modal";
 
 interface Props {
   data: CoinType[] | any;
@@ -27,6 +28,43 @@ const CryptoCard: React.FC<Props> = ({
   const pathname = usePathname();
   const router = useRouter();
 
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [content, setContent] = useState<string>("");
+  const [deleteId, setDeleteId] = useState<number | null>(null);
+  const [cryptoName, setCryptoName] = useState<string>(""); 
+
+  const handleOpen = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    id: number,
+    cryptoName: string
+  ) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDeleteId(id)
+    setCryptoName(cryptoName)
+    setShowModal(true)
+    setContent(`Are you sure delete ${cryptoName}?`);
+  };
+
+  const handleClose = () => setShowModal(false);
+
+  const handleOk = async () => {
+    if (deleteId && cryptoName) {
+      try {
+        const res = await deleteCoinService(deleteId.toString(), username);
+        if (res.ok) {
+          mutate();
+          setShowModal(false);
+        } else {
+          const error = await res.json();
+          setContent(`Deleted coin ${error.message}`)
+        }
+      } catch (error) {
+        setContent('Error deleting coin')
+      }
+    }
+  };
+
   useEffect(() => {
     if (pathname === "/") {
       setTitle("Cryptocurrency");
@@ -39,34 +77,16 @@ const CryptoCard: React.FC<Props> = ({
     return null;
   }
 
-  const onDeleteCoin = async (
-    e: React.MouseEvent<HTMLButtonElement>,
-    id: number
-  ) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    if (window.confirm("Are you sure delete this coin?")) {
-      try {
-        const res = await deleteCoinService(id.toString(), username);
-        if (res.ok) {
-          alert(`Delete coin with ID ${id}`);
-          mutate();
-          router.push("/portfolio");
-        } else {
-          const error = await res.json();
-          alert(`Fail to delete coin: ${error}`);
-          console.error("fail to delete", error);
-        }
-      } catch (error) {
-        console.error("Error delete coin:", error);
-        alert("An error occurred while deleting the coin.");
-      }
-    }
-  };
-
   return (
     <div className="flex flex-col pt-2 px-4 w-full">
+       <Modal
+        open={showModal}
+        close={handleClose}
+        header="Delete"
+        content={content}
+        ok={handleOk}
+        showCancelBtn={false}
+      />
       {isMobile ? (
         <div className="flex items-center justify-between">
           <p className="text-xl font-semibold py-4">{title}</p>
@@ -149,10 +169,10 @@ const CryptoCard: React.FC<Props> = ({
               </div>
             </Link>
             {showDelete && (
-              <div className="text-right">
+              <div className="flex justify-end">
                 <button
                   className="danger"
-                  onClick={(e) => onDeleteCoin(e, coin.id)}
+                  onClick={(e) => handleOpen(e, coin.id, coin.name)}
                 >
                   <Icon path={mdiTrashCan} size={1} />
                 </button>

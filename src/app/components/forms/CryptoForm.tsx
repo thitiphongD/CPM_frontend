@@ -17,6 +17,7 @@ import { useAuth } from "@/app/auth/AuthProvider";
 import Image from "next/image";
 import Icon from "@mdi/react";
 import { mdiArrowLeft } from "@mdi/js";
+import Modal from "../ui/Modal";
 
 interface Props {
   data: CoinType;
@@ -38,6 +39,16 @@ const CryptoForm: React.FC<Props> = ({ onBack, refresh, data }) => {
   const isAdd = searchParams.get("isAdd");
   const isEdit = searchParams.get("isEdit");
   const [amount, setAmount] = useState(0);
+
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [content, setContent] = useState<string>("");
+  const handleOpen = () => setShowModal(true);
+  const handleClose = () => setShowModal(false);
+  const handleOk = () => {
+    setShowModal(false);
+    refresh();
+    router.push("/portfolio");
+  };
 
   useEffect(() => {
     const quantity = parseFloat(formData.quantity);
@@ -66,21 +77,20 @@ const CryptoForm: React.FC<Props> = ({ onBack, refresh, data }) => {
 
       const quantity = parseFloat(formData.quantity);
       if (isNaN(quantity) || quantity <= 0) {
-        alert("Please enter a valid quantity");
+        setContent("Please enter a valid quantity")
+        handleOpen();
         return;
       }
-
       try {
         if (isAdd) {
           const payload: FormCryptoPayload = {
             ...formData,
             username,
-          };
+          };   
           const res = await addCoinService(payload);
           if (res.ok) {
-            alert("buy success");
-            refresh();
-            router.push("/portfolio");
+            setContent("Buy Success")
+            handleOpen();
           }
         }
         if (isEdit && formData.id) {
@@ -90,79 +100,94 @@ const CryptoForm: React.FC<Props> = ({ onBack, refresh, data }) => {
           };
           const update = await updateCoinService(formData.id, payloadUpdate);
           if (update.ok) {
-            alert("Update success");
-            refresh();
-            router.push("/portfolio");
+            setContent("Update success")
+            handleOpen();
           } else {
-            alert("Update fail");
+            setContent("Update fail")
           }
         }
       } catch (error) {
         console.error("error:", error);
-        alert("An error occurred");
+        setContent("An error occurred")
       }
     },
-    [formData, isAdd, isEdit, refresh, router, username]
+    [formData, isAdd, isEdit, username]
   );
 
   const displayAmount = isNaN(amount) ? 0 : amount;
 
   return (
-    <div className="p-4">
-      <button onClick={onBack} className="pl-10 pt-2 lg:hidden">
-        <Icon path={mdiArrowLeft} size={1.5} />
-      </button>
-      <div className="all-center gap-4 pt-2">
-        <Image
-          src={data.logo}
-          width={40}
-          height={40}
-          alt={`${data.name} logo`}
-          className="rounded-full"
-        />
-        <div className="flex items-center gap-1">
-          <p>{data.name}</p>
-          <p>({data.symbol})</p>
+    <>
+      <Modal
+        open={showModal}
+        close={handleClose}
+        header="Crypto"
+        content={content}
+        ok={handleOk}
+        showCancelBtn={false}
+      />
+      <div className="p-4">
+        <button onClick={onBack} className="pl-10 pt-2 lg:hidden">
+          <Icon path={mdiArrowLeft} size={1.5} />
+        </button>
+        <div className="all-center gap-4 pt-2">
+          <Image
+            src={data.logo}
+            width={40}
+            height={40}
+            alt={`${data.name} logo`}
+            className="rounded-full"
+          />
+          <div className="flex items-center gap-1">
+            <p>{data.name}</p>
+            <p>({data.symbol})</p>
+          </div>
+        </div>
+        <div className="text-center mt-10 leading-loose">
+          <p className="font-bold text-md text-[#7c7c7c]">
+            ESTIMATE BUYING PRICE
+          </p>
+          <p className="text-2xl font-bold">
+            ${data.quote.USD.price.toFixed(2)}
+          </p>
+        </div>
+        <div className="mt-4">
+          <p className="mb-4 text-center font-bold text-md text-[#7c7c7c]">
+            How much do you want to buy?
+          </p>
+          <div className="flex items-center justify-center">
+            <form onSubmit={handleSubmit}>
+              <div className="mb-4 flex gap-2 items-center">
+                <input
+                  name="quantity"
+                  type="number"
+                  placeholder="Enter Quantity"
+                  className="placeholder-[#7c7c7c] p-2 hover:text-hoverYellow"
+                  onChange={handleChange}
+                  value={formData.quantity || ""}
+                  required
+                />
+                <p className="font-bold text-xl text-[#7c7c7c]">
+                  {data.symbol}
+                </p>
+              </div>
+              <div>
+                <p className="font-bold text-md text-[#7c7c7c]">
+                  Quantity: {formData.quantity || "0"}
+                </p>
+                <p className="font-bold text-md text-[#7c7c7c]">
+                  Amount: ${displayAmount.toFixed(2)}
+                </p>
+              </div>
+              <br />
+              <button className="primary w-full" type="submit">
+                Buy
+              </button>
+            </form>
+          </div>
         </div>
       </div>
-      <div className="text-center mt-10 leading-loose">
-        <p className="font-bold text-md text-[#7c7c7c]">
-          ESTIMATE BUYING PRICE
-        </p>
-        <p className="text-2xl font-bold">${data.quote.USD.price.toFixed(2)}</p>
-      </div>
-      <div className="mt-4">
-        <p className="mb-4 text-center font-bold text-md text-[#7c7c7c]"> How much do you want to buy?</p>
-        <div className="flex items-center justify-center">
-          <form onSubmit={handleSubmit}>
-            <div className="mb-4 flex gap-2 items-center">
-              <input
-                name="quantity"
-                type="number"
-                placeholder="Enter Quantity"
-                className="placeholder-[#7c7c7c] p-2 hover:text-hoverYellow"
-                onChange={handleChange}
-                value={formData.quantity || ""}
-                required
-              />
-              <p className="font-bold text-xl text-[#7c7c7c]">{data.symbol}</p>
-            </div>
-            <div>
-              <p className="font-bold text-md text-[#7c7c7c]">
-                Quantity: {formData.quantity || "0"}
-              </p>
-              <p className="font-bold text-md text-[#7c7c7c]">
-                Amount: ${displayAmount.toFixed(2)}
-              </p>
-            </div>
-            <br />
-            <button className="primary w-full" type="submit">
-              Buy
-            </button>
-          </form>
-        </div>
-      </div>
-    </div>
+    </>
   );
 };
 

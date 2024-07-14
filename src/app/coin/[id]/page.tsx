@@ -24,7 +24,7 @@ const CoinPage: React.FC<Coin> = ({ params }) => {
   const [btnText, setBtnText] = useState<string>("");
   const isAdd = searchParams.get("isAdd");
   const isEdit = searchParams.get("isEdit");
-
+  
   useEffect(() => {
     if (isAdd) {
       setBtnText(BtnText.ADD_COIN);
