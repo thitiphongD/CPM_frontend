@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import useSWR from "swr";
 import CryptoForm from "@/app/components/forms/CryptoForm";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/app/auth/AuthProvider";
 import { fetcherGET } from "@/app/services/user.service";
+import Loading from "@/app/components/ui/Loading";
 
 interface Coin {
   params: {
@@ -18,6 +19,19 @@ const CoinPage: React.FC<Coin> = ({ params }) => {
   const { isAuth } = useAuth();
   const router = useRouter();
   const [openForm, setOpenForm] = useState<boolean>(false);
+  const searchParams = useSearchParams();
+  const [btnText, setBtnText] = useState<string>("");
+  const isAdd = searchParams.get("isAdd");
+  const isEdit = searchParams.get("isEdit");
+
+  useEffect(() => {
+    if (isAdd) {
+      setBtnText("Add Coin!");
+    }
+    if (isEdit) {
+      setBtnText("Update Quantity Coin!");
+    }
+  }, [isAdd, isEdit]);
 
   const {
     data: coin,
@@ -37,7 +51,8 @@ const CoinPage: React.FC<Coin> = ({ params }) => {
     setOpenForm(false);
   };
 
-  if (isLoading) return <p>รออออออออ</p>;
+  if (isLoading) return <Loading />;
+
   return (
     <>
       {!openForm ? (
@@ -89,7 +104,7 @@ const CoinPage: React.FC<Coin> = ({ params }) => {
             onClick={onOpenForm}
             className="primary w-full mt-10 lg:w-40 font-bold"
           >
-            Buy
+            {btnText}
           </button>
         </div>
       ) : (

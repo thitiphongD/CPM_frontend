@@ -37,7 +37,7 @@ const CryptoCard: React.FC<Props> = ({ data, username }) => {
         } else {
           const error = await res.json();
           alert(`Failed to delete coin: ${error}`);
-          console.log("fail to delete", error);
+          console.error("fail to delete", error);
         }
       } catch (error) {
         console.error("Error deleting coin:", error);

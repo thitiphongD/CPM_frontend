@@ -12,10 +12,8 @@ import {
   FormCryptoUpdatePayload,
 } from "@/app/interfaces/coin";
 import { addCoinService, updateCoinService } from "@/app/services/coin.service";
-import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/app/auth/AuthProvider";
-import { string } from "zod";
 
 interface Props {
   data: CoinType;
@@ -75,9 +73,6 @@ const CryptoForm: React.FC<Props> = ({ onBack, refresh, data }) => {
             ...formData,
             username,
           };
-
-          console.log('payload', payload);
-          
           const res = await addCoinService(payload);
           if (res.ok) {
             alert("buy success");

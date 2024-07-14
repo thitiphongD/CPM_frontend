@@ -8,6 +8,7 @@ import CryptoCard from "./components/CryptoCard";
 import { useAuth } from "./auth/AuthProvider";
 import { fetcherGET } from "./services/user.service";
 
+
 const Home = () => {
   const { data } = useSWR("http://localhost:8080/coins", fetcherGET);
   const isMobile = useIsMobile();
