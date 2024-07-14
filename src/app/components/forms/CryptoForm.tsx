@@ -9,6 +9,7 @@ import { CoinType, FormCrypto, FormCryptoPayload } from "@/app/interfaces/coin";
 import { addCoinService } from "@/app/services/coin.service";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useAuth } from "@/app/auth/AuthProvider";
 
 interface Props {
   data: CoinType;
@@ -19,6 +20,9 @@ interface Props {
 const CryptoForm: React.FC<Props> = ({ onBack, refresh, data }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { isAuth } = useAuth();
+
+  const username = isAuth.username;
 
   const [formData, setFormData] = useState<FormCrypto>({
     id: data.id,
@@ -32,7 +36,6 @@ const CryptoForm: React.FC<Props> = ({ onBack, refresh, data }) => {
   console.log("isEdit", isEdit);
 
   const [amount, setAmount] = useState(0);
-  const username = localStorage.getItem("username");
 
   const handleChange = useCallback(
     (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {

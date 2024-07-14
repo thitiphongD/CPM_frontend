@@ -2,8 +2,8 @@
 import React, { ChangeEvent, useCallback, useRef, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { FormLogin } from "@/app/interfaces/auth";
-import { useAuth } from "@/app/auth/useAuth";
 import { loginService } from "@/app/services/auth.service";
+import { useAuth } from "@/app/auth/AuthProvider";
 
 const LoginForm = () => {
   const { loginAuth } = useAuth();

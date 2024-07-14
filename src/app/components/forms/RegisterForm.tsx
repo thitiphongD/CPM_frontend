@@ -6,6 +6,7 @@ import { registerService } from "@/app/services/auth.service";
 
 const RegisterForm = () => {
   const router = useRouter();
+  
   const form = useRef<FormRegister>({
     username: "",
     password: "",

@@ -1,24 +1,20 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import useSWR from "swr";
 import CryptoCard from "../components/CryptoCard";
 import Loading from "../components/ui/Loading";
 import { fetcherPOST } from "../utils/fetcher";
+import { useAuth } from "../auth/AuthProvider";
 
 const PortfolioPage: React.FC = () => {
-  const [username, setUsername] = useState<string | null>(null);
-
-  useEffect(() => {
-    const storedUsername = localStorage.getItem("username");
-    setUsername(storedUsername);
-  }, []);
+  const { isAuth } = useAuth();
 
   const {
     data: portfolioData,
     error,
     isLoading,
   } = useSWR(
-    username ? `http://localhost:8080/portfolio/${username}` : null,
+    isAuth.username ? `http://localhost:8080/portfolio/${isAuth.username}` : null,
     fetcherPOST
   );
 
@@ -30,7 +26,7 @@ const PortfolioPage: React.FC = () => {
         <Loading />
       ) : (
         <div>
-          <CryptoCard data={portfolioData} username={username} />
+          <CryptoCard data={portfolioData} username={isAuth.username} />
         </div>
       )}
     </div>

@@ -1,7 +1,6 @@
-import RegisterForm from "@/app/components/forms/RegisterForm";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React from "react";
+import RegisterForm from "@/app/components/forms/RegisterForm";
 
 const RegisterPage: React.FC = () => {
   return (

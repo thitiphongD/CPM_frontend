@@ -1,7 +1,7 @@
 "use client";
+import React from "react";
 import { mdiChartPie, mdiHome, mdiLogin, mdiLogout } from "@mdi/js";
 import Icon from "@mdi/react";
-import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../auth/AuthProvider";
@@ -9,11 +9,6 @@ import { useAuth } from "../auth/AuthProvider";
 const NavMenuBottom = () => {
   const { isAuth, logoutAuth } = useAuth();
   const router = useRouter();
-  const [username, setUsername] = useState<string | null>(null);
-
-  useEffect(() => {
-    setUsername(localStorage.getItem("username"));
-  }, [isAuth]);
 
   const handleLogout = () => {
     logoutAuth();
@@ -28,7 +23,7 @@ const NavMenuBottom = () => {
           Home
         </Link>
       </div>
-      {isAuth ? (
+      {isAuth.login ? (
         <>
           <div className="text-center">
             <Link

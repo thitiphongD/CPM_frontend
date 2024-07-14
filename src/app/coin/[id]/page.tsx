@@ -26,7 +26,7 @@ const CoinPage: React.FC<Coin> = ({ params }) => {
   } = useSWR(`http://localhost:8080/coin/${params.id}`, fetcherGET);
 
   const onOpenForm = () => {
-    if (isAuth) {
+    if (isAuth.login) {
       setOpenForm(true);
     } else {
       router.push("/login");

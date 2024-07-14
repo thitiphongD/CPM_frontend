@@ -7,12 +7,8 @@ import { useAuth } from "../auth/AuthProvider";
 const Navbar = () => {
   const { isAuth, logoutAuth } = useAuth();
   const router = useRouter();
-  const [username, setUsername] = useState<string | null>(null);
-
-  useEffect(() => {
-    setUsername(localStorage.getItem("username"));
-  }, [isAuth]);
-
+  const username = isAuth.username;
+  
   const handleLogout = () => {
     logoutAuth();
     router.push("/");
@@ -30,7 +26,6 @@ const Navbar = () => {
         </Link>
       </div>
       <div className="flex-center gap-4">
-       
         {isAuth ? (
           <div className="flex-center gap-4">
             <Link
