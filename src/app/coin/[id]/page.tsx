@@ -8,6 +8,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/app/auth/AuthProvider";
 import { fetcherGET } from "@/app/services/user.service";
 import Loading from "@/app/components/ui/Loading";
+import { BtnText } from "@/app/interfaces/auth";
 
 interface Coin {
   params: {
@@ -26,10 +27,10 @@ const CoinPage: React.FC<Coin> = ({ params }) => {
 
   useEffect(() => {
     if (isAdd) {
-      setBtnText("Add Coin!");
+      setBtnText(BtnText.ADD_COIN);
     }
     if (isEdit) {
-      setBtnText("Update Quantity Coin!");
+      setBtnText(BtnText.UPDATE_COIN);
     }
   }, [isAdd, isEdit]);
 
@@ -102,7 +103,7 @@ const CoinPage: React.FC<Coin> = ({ params }) => {
           </div>
           <button
             onClick={onOpenForm}
-            className="primary w-full mt-10 lg:w-40 font-bold"
+            className="primary w-full mt-10 lg:w-56 font-bold"
           >
             {btnText}
           </button>

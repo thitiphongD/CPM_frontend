@@ -6,13 +6,17 @@ import Link from "next/link";
 import useIsMobile from "../hooks/useIsMobile";
 import { usePathname } from "next/navigation";
 import { deleteCoinService } from "../services/coin.service";
+import Icon from "@mdi/react";
+import { mdiTrashCan } from "@mdi/js";
 
 interface Props {
   data: CoinType[] | any;
   username: string | null;
+  mutate: () => void;
+  showDelete: boolean
 }
 
-const CryptoCard: React.FC<Props> = ({ data, username }) => {
+const CryptoCard: React.FC<Props> = ({ data, username, mutate, showDelete }) => {
   const isMobile = useIsMobile();
   const [title, setTitle] = useState("");
   const pathname = usePathname();
@@ -29,18 +33,19 @@ const CryptoCard: React.FC<Props> = ({ data, username }) => {
   }
 
   const onDeleteCoin = async (id: number) => {
-    if (window.confirm("Are you sure you want to delete this coin?")) {
+    if (window.confirm("Are you sure delete this coin?")) {
       try {
         const res = await deleteCoinService(id.toString(), username);
         if (res.ok) {
-          alert(`Successfully deleted coin with ID ${id}`);
+          alert(`Delete coin with ID ${id}`);
+          mutate();
         } else {
           const error = await res.json();
-          alert(`Failed to delete coin: ${error}`);
+          alert(`Fail to delete coin: ${error}`);
           console.error("fail to delete", error);
         }
       } catch (error) {
-        console.error("Error deleting coin:", error);
+        console.error("Error delete coin:", error);
         alert("An error occurred while deleting the coin.");
       }
     }
@@ -69,60 +74,81 @@ const CryptoCard: React.FC<Props> = ({ data, username }) => {
         </div>
       )}
 
-      {data.map((coin: CoinType) => (
-        <div key={coin.id} className="coin-card w-full mt-2 border rounded-lg">
-          <Link
-            href={{
-              pathname: `/coin/${coin.id}`,
-              query:
-                pathname === "/"
-                  ? { isAdd: "true" }
-                  : pathname === "/portfolio"
-                  ? { isEdit: "true" }
-                  : {},
-            }}
-            className="flex w-full justify-between items-start no-underline"
+      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {data.map((coin: CoinType) => (
+          <div
+            key={coin.id}
+            className="coin-card border rounded-lg p-4 flex flex-col"
           >
-            <div className="flex items-start gap-4 col-span-2">
-              <Image
-                src={coin.logo}
-                width={30}
-                height={30}
-                alt={`${coin.name} logo`}
-              />
-              <div>
-                <p className="font-bold">{coin.name} </p>
-                <p className="font-normal text-[#7c7c7c]">{coin.symbol}</p>
-                {coin.quantity && (
-                  <p className="font-normal text-[#7c7c7c]">
-                    Quantity {coin.quantity.toFixed(2)}
+            <Link
+              href={{
+                pathname: `/coin/${coin.id}`,
+                query:
+                  pathname === "/"
+                    ? { isAdd: "true" }
+                    : pathname === "/portfolio"
+                    ? { isEdit: "true" }
+                    : {},
+              }}
+              className="flex flex-col h-full no-underline"
+            >
+              <div className="flex items-start justify-between gap-4 mb-4">
+                <div className="flex items-start gap-2">
+                  <Image
+                    src={coin.logo}
+                    width={40}
+                    height={40}
+                    alt={`${coin.name} logo`}
+                    className="rounded-full"
+                  />
+                  <div>
+                    <p className="font-bold">{coin.name}</p>
+                    <p className="text-sm text-gray-600">{coin.symbol}</p>
+                  </div>
+                </div>
+
+                <div className="text-right">
+                  <p className="font-medium">
+                    ${coin.quote.USD.price.toFixed(2)}
                   </p>
-                )}
-                {coin.amount && (
-                  <p className="font-normal text-[#7c7c7c]">
-                    Amount {coin.amount.toFixed(2)}
+                  <p
+                    className={`text-sm ${
+                      coin.quote.USD.percent_change_24h >= 0
+                        ? "text-green-600"
+                        : "text-red-600"
+                    }`}
+                  >
+                    {coin.quote.USD.percent_change_24h.toFixed(2)}%
                   </p>
+                </div>
+              </div>
+              <div className="flex items-center justify-between">
+                <div>
+                  {coin.quantity && (
+                    <p className="text-sm text-gray-600">
+                      Quantity: {coin.quantity.toFixed(2)}
+                    </p>
+                  )}
+                  {coin.amount && (
+                    <p className="text-sm text-gray-600">
+                      Amount: ${coin.amount.toFixed(2)}
+                    </p>
+                  )}
+                </div>
+
+                {showDelete && (
+                  <button
+                    className="danger"
+                    onClick={() => onDeleteCoin(coin.id)}
+                  >
+                    <Icon path={mdiTrashCan} size={1} />
+                  </button>
                 )}
               </div>
-            </div>
-            <div className="text-right col-span-1">
-              <p className="font-normal text-[#7c7c7c]">
-                ${coin.quote.USD.price.toFixed(2)}
-              </p>
-              <p className="font-normal text-[#7c7c7c]">
-                {coin.quote.USD.percent_change_24h.toFixed(2)}%
-              </p>
-            </div>
-          </Link>
-          {pathname === "/portfolio" && (
-            <div className="flex justify-end">
-              <button className="danger" onClick={() => onDeleteCoin(coin.id)}>
-                Delete
-              </button>
-            </div>
-          )}
-        </div>
-      ))}
+            </Link>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

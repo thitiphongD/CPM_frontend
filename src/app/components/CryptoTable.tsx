@@ -59,9 +59,33 @@ const CryptoTable: React.FC<Props> = ({ data }) => {
                 </div>
               </td>
               <td>${coin.quote.USD.price.toFixed(2)}</td>
-              <td>{coin.quote.USD.percent_change_1h.toFixed(2)}%</td>
-              <td>{coin.quote.USD.percent_change_24h.toFixed(2)}%</td>
-              <td>{coin.quote.USD.percent_change_7d.toFixed(2)}%</td>
+              <td
+                className={`text-sm ${
+                  coin.quote.USD.percent_change_1h >= 0
+                    ? "text-green-600"
+                    : "text-red-600"
+                }`}
+              >
+                {coin.quote.USD.percent_change_1h.toFixed(2)}%
+              </td>
+              <td
+                className={`text-sm ${
+                  coin.quote.USD.percent_change_24h >= 0
+                    ? "text-green-600"
+                    : "text-red-600"
+                }`}
+              >
+                {coin.quote.USD.percent_change_24h.toFixed(2)}%
+              </td>
+              <td
+                className={`text-sm ${
+                  coin.quote.USD.percent_change_7d >= 0
+                    ? "text-green-600"
+                    : "text-red-600"
+                }`}
+              >
+                {coin.quote.USD.percent_change_7d.toFixed(2)}%
+              </td>
               <td>${coin.quote.USD.volume_24h.toFixed(2)}</td>
               <td>${coin.quote.USD.market_cap.toFixed(2)}</td>
             </tr>

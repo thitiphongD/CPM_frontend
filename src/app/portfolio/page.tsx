@@ -17,6 +17,7 @@ const PortfolioPage: React.FC = () => {
     data: portfolioData,
     error,
     isLoading,
+    mutate,
   } = useSWR(
     username ? ["http://localhost:8080/portfolio", username] : null,
     ([url, username]) => getPortfolioService(url, username),
@@ -35,7 +36,7 @@ const PortfolioPage: React.FC = () => {
       <div className="lg:px-40">
         <div>
           {!notFound ? (
-            <CryptoCard data={portfolioData} username={username} />
+            <CryptoCard data={portfolioData} username={username} mutate={mutate} showDelete={true} />
           ) : (
             <CoinNotFound />
           )}

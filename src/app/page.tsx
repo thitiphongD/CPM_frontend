@@ -10,7 +10,7 @@ import { fetcherGET } from "./services/user.service";
 
 
 const Home = () => {
-  const { data } = useSWR("http://localhost:8080/coins", fetcherGET);
+  const { data, mutate } = useSWR("http://localhost:8080/coins", fetcherGET);
   const isMobile = useIsMobile();
   const { isAuth } = useAuth();
 
@@ -19,7 +19,7 @@ const Home = () => {
     <>
       <div className="all-center pb-20">
         {isMobile ? (
-          <CryptoCard data={data} username={isAuth.username} />
+          <CryptoCard data={data} username={isAuth.username} mutate={mutate} showDelete={false} />
         ) : (
           <CryptoTable data={data} />
         )}
