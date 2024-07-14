@@ -111,7 +111,6 @@ const CryptoForm: React.FC<Props> = ({ onBack, refresh, data }) => {
   return (
     <div className="p-4">
       <div className="all-center gap-4">
-        {/* <img src={data.logo} alt={data.name} className="w-8 h-8" /> */}
         <p>{data.name}</p>
         <p>{data.symbol}</p>
       </div>
