@@ -87,11 +87,11 @@ const CoinPage: React.FC<Coin> = ({ params }) => {
           </div>
 
           <div className="text-center mb-10">
-            <p>${coin?.quote.USD.price.toFixed(2)} USD</p>
+            <p className="mb-4 mt-4">${coin?.quote.USD.price.toFixed(2)} USD</p>
             <div className="flex justify-center items-center gap-2">
               <p>{coin?.quote.USD.volume_24h.toFixed(2)}</p>
               <p>|</p>
-              <p> {coin?.quote.USD.percent_change_24h.toFixed(2)}%</p>
+              <p>{coin?.quote.USD.percent_change_24h.toFixed(2)}%</p>
               <p>|</p>
               <p>{coin?.quote.USD.market_cap.toFixed(2)}</p>
             </div>
@@ -101,12 +101,14 @@ const CoinPage: React.FC<Coin> = ({ params }) => {
             <br />
             <p>{coin?.description}</p>
           </div>
-          <button
-            onClick={onOpenForm}
-            className="primary w-full mt-10 lg:w-56 font-bold"
-          >
-            {btnText}
-          </button>
+          <div className="lg:flex items-center justify-end">
+            <button
+              onClick={onOpenForm}
+              className="primary w-full mt-10 lg:w-56 font-bold"
+            >
+              {btnText}
+            </button>
+          </div>
         </div>
       ) : (
         <CryptoForm data={coin} onBack={onCloseForm} refresh={mutate} />
