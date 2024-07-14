@@ -1,14 +1,20 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { CoinType } from "../interfaces/coin";
+import { usePathname } from "next/navigation";
 
 type Props = {
   data: CoinType[];
 };
 
 const CryptoTable: React.FC<Props> = ({ data }) => {
+  const pathname = usePathname();
+
+  if (!data || !Array.isArray(data)) {
+    return null;
+  }
   return (
     <div className="overflow-x-auto">
       <table className="w-full">
@@ -38,7 +44,15 @@ const CryptoTable: React.FC<Props> = ({ data }) => {
                   />
                   <Link
                     className="inline-block align-baseline font-bold text-sm hover:text-customYellow"
-                    href={`/coin/${coin.id}`}
+                    href={{
+                      pathname: `/coin/${coin.id}`,
+                      query:
+                        pathname === "/"
+                          ? { isAdd: "true" }
+                          : pathname === "/portfolio"
+                          ? { isEdit: "true" }
+                          : {},
+                    }}
                   >
                     {coin.name} ({coin.symbol})
                   </Link>

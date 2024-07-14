@@ -29,3 +29,14 @@ export const getCoinData = async (id: string) => {
   }
   return res.json();
 }
+
+export const deleteCoinService = async (id: string, username: string | null) => {
+  const res = await fetch(`http://localhost:8080/portfolio/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ username }),
+  });
+  return res;
+};

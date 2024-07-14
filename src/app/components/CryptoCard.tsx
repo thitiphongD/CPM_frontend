@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import useIsMobile from "../hooks/useIsMobile";
 import { usePathname } from "next/navigation";
+import { deleteCoinService } from "../services/coin.service";
 
 interface Props {
   data: CoinType[] | any;
@@ -23,10 +24,27 @@ const CryptoCard: React.FC<Props> = ({ data, username }) => {
       setTitle("Portfolio");
     }
   }, [pathname]);
-
   if (!data || !Array.isArray(data)) {
     return null;
   }
+
+  const onDeleteCoin = async (id: number) => {    
+    if (window.confirm("Are you sure you want to delete this coin?")) {
+      try {
+        const res = await deleteCoinService(id.toString(), username);
+        if (res.ok) {
+          alert(`Successfully deleted coin with ID ${id}`);
+        } else {
+          const error = await res.json();
+          alert(`Failed to delete coin: ${error}`);
+          console.log("fail to delete", error);
+        }
+      } catch (error) {
+        console.error("Error deleting coin:", error);
+        alert("An error occurred while deleting the coin.");
+      }
+    }
+  };
 
   return (
     <div className="flex flex-col pt-2 px-4 w-full">
@@ -54,11 +72,15 @@ const CryptoCard: React.FC<Props> = ({ data, username }) => {
       {data.map((coin: CoinType) => (
         <div key={coin.id} className="coin-card w-full mt-2 border rounded-lg">
           <Link
-           href={{
-            pathname: `/coin/${coin.id}`,
-            query: pathname === "/" ? { isAdd: "true" } : pathname === "/portfolio" ? { isEdit: "true" } : {}
-          }}
-            
+            href={{
+              pathname: `/coin/${coin.id}`,
+              query:
+                pathname === "/"
+                  ? { isAdd: "true" }
+                  : pathname === "/portfolio"
+                  ? { isEdit: "true" }
+                  : {},
+            }}
             className="flex w-full justify-between items-start no-underline"
           >
             <div className="flex items-start gap-4 col-span-2">
@@ -92,6 +114,11 @@ const CryptoCard: React.FC<Props> = ({ data, username }) => {
               </p>
             </div>
           </Link>
+          <div className="flex justify-end">
+            <button className="danger" onClick={() => onDeleteCoin(coin.id)}>
+              Delete
+            </button>
+          </div>
         </div>
       ))}
     </div>

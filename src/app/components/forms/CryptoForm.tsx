@@ -36,7 +36,6 @@ const CryptoForm: React.FC<Props> = ({ onBack, refresh, data }) => {
 
   const isAdd = searchParams.get("isAdd");
   const isEdit = searchParams.get("isEdit");
-
   const [amount, setAmount] = useState(0);
 
   useEffect(() => {
@@ -76,6 +75,9 @@ const CryptoForm: React.FC<Props> = ({ onBack, refresh, data }) => {
             ...formData,
             username,
           };
+
+          console.log('payload', payload);
+          
           const res = await addCoinService(payload);
           if (res.ok) {
             alert("buy success");
