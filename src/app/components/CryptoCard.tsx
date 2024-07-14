@@ -4,7 +4,7 @@ import { CoinType } from "../interfaces/coin";
 import Image from "next/image";
 import Link from "next/link";
 import useIsMobile from "../hooks/useIsMobile";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { deleteCoinService } from "../services/coin.service";
 import Icon from "@mdi/react";
 import { mdiTrashCan } from "@mdi/js";
@@ -26,7 +26,6 @@ const CryptoCard: React.FC<Props> = ({
   const isMobile = useIsMobile();
   const [title, setTitle] = useState("");
   const pathname = usePathname();
-  const router = useRouter();
 
   const [showModal, setShowModal] = useState<boolean>(false);
   const [content, setContent] = useState<string>("");

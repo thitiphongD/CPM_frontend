@@ -39,7 +39,7 @@ export const withAuth = (WrapComponent: React.ComponentType) => {
     }, [isAuth, isLoaded, router]);
 
     if (!isLoaded) {
-      return null; // หรือ return <LoadingComponent />
+      return null;
     }
 
     if (!isAuth) {
